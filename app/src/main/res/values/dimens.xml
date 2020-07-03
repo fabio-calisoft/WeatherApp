@@ -1,0 +1,157 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- MARGIN -->
+    <dimen name="margin_huge">52dp</dimen>
+    <dimen name="margin_xxx_large">48dp</dimen>
+    <dimen name="margin_xx_large">32dp</dimen>
+    <dimen name="margin_x_large">24dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_normal">12dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_tiny">5dp</dimen>
+
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="padding_medium">14dp</dimen>
+
+    <!-- CONTROL SIZE -->
+    <dimen name="control_size_large">44dp</dimen>
+    <dimen name="control_size_medium">35dp</dimen>
+    <dimen name="control_size_small">24dp</dimen>
+    <dimen name="drawer_item_height">68dp</dimen>
+
+    <!-- AVATAR SIZE -->
+    <dimen name="avatar_xxlarge">112dp</dimen>
+    <dimen name="avatar_xlarge">88dp</dimen>
+    <dimen name="avatar_large">62dp</dimen>
+    <dimen name="avatar_normal">40dp</dimen>
+    <dimen name="avatar_small">28dp</dimen>
+
+    <!-- CUSTOM SIZE -->
+    <dimen name="chat_media_size">160dp</dimen>
+    <dimen name="progress_bar_size">48dp</dimen>
+    <dimen name="progress_bar_size_small">32dp</dimen>
+
+    <dimen name="divider_size_large">2dp</dimen>
+    <dimen name="divider_size_medium">1.5dp</dimen>
+    <dimen name="divider_size_default">1dp</dimen>
+
+    <!-- 2 * margin_small + avatar_size -->
+    <dimen name="chat_current_user_content_margin">68dp</dimen>
+    <dimen name="chat_other_user_content_margin">24dp</dimen>
+
+    <!-- chat_bottom_control_height - 2 * margin_small -->
+    <dimen name="chat_input_min_height">40dp</dimen>
+
+    <dimen name="emoji_width">25dp</dimen>
+    <dimen name="emoji_height">25dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <!-- Copyright 2012 Square, Inc. -->
+    <dimen name="calendar_day_headers_paddingbottom">4dp</dimen>
+    <dimen name="calendar_month_topmargin">16dp</dimen>
+    <dimen name="calendar_month_title_bottommargin">4dp</dimen>
+
+    <dimen name="progress_bar_stroke_width">4dp</dimen>
+
+    <!-- Collapsible Calendar -->
+    <dimen name="event_size">6dp</dimen>
+    <dimen name="check_box_size">14dp</dimen>
+    <dimen name="default_elevation">4dp</dimen>
+    <dimen name="image_corner">6dp</dimen>
+    <dimen name="home_event_image_width">87dp</dimen>
+    <dimen name="home_event_image_height">76dp</dimen>
+    <dimen name="home_event_image_radius">3dp</dimen>
+    <dimen name="author_avatar_size">22dp</dimen>
+    <dimen name="button_icon_size">24dp</dimen>
+    <dimen name="button_icon_size_medium">48dp</dimen>
+    <dimen name="padding_top_on_boarding">48dp</dimen>
+    <dimen name="margin_line">10dp</dimen>
+    <dimen name="line_height">2dp</dimen>
+    <dimen name="suggest_people_avatar_size">40dp</dimen>
+    <dimen name="calendar_indicator_size">12dp</dimen>
+    <dimen name="actionBarSize">56dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="navigation_bar_height">56dp</dimen>
+    <dimen name="padding_tiny">5dp</dimen>
+    <dimen name="interest_animation_size">56dp</dimen>
+    <dimen name="input_height">56dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="chat_media_notification_size">128dp</dimen>
+    <dimen name="suggestion_plan_radius">24dp</dimen>
+    <dimen name="filter_photo_height">60dp</dimen>
+    <dimen name="filter_photo_width">105dp</dimen>
+    <dimen name="snackbar_bottom_margin">80dp</dimen>
+
+
+    <dimen name="invited_item_size">24dp</dimen>
+    <dimen name="invited_status_item_size">12dp</dimen>
+    <dimen name="dp76">76dp</dimen>
+    <dimen name="button_icon_size_small">16dp</dimen>
+
+    <dimen name="session_keyline">64dp</dimen>
+    <dimen name="event_dot_padding">6dp</dimen>
+    <dimen name="calendar_day_height">40dp</dimen>
+    <dimen name="calendar_day_radius">12dp</dimen>
+    <dimen name="button_height_small">40dp</dimen>
+    <dimen name="invited_item_min_height">64dp</dimen>
+    <dimen name="place_holder_text_height">12dp</dimen>
+    <dimen name="place_holder_text_width_short">50dp</dimen>
+    <dimen name="place_holder_text_width_long">120dp</dimen>
+    <dimen name="place_holder_text_width_small">30dp</dimen>
+    <dimen name="place_holder_button_width">96dp</dimen>
+    <dimen name="place_holder_button_height">40dp</dimen>
+    <dimen name="icon_size">48dp</dimen>
+    <dimen name="user_status_size">14dp</dimen>
+    <dimen name="icon_size_small">18dp</dimen>
+
+
+    <!-- ////////////////////////// -->
+    <!-- Unified dimensions -->
+    <!-- ////////////////////////// -->
+
+    <!-- Common -->
+    <dimen name="zero">0dp</dimen>
+    <dimen name="half_corner_radius">4dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
+    <dimen name="double_corner_radius">16dp</dimen>
+    <dimen name="input_corner_radius">@dimen/corner_radius</dimen>
+    <dimen name="input_outlined_corner_radius">20dp</dimen>
+    <dimen name="modal_corner_radius">@dimen/double_corner_radius</dimen>
+    <dimen name="dialog_corner_radius">@dimen/corner_radius</dimen>
+    <dimen name="button_corner_radius">@dimen/half_corner_radius</dimen>
+    <dimen name="toolbar_rounded_corner_radius">@dimen/double_corner_radius</dimen>
+    <dimen name="stroke">1dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_height_divider">1dp</dimen>
+    <dimen name="toolbar_height_background">55dp</dimen>
+
+    <!-- Text -->
+    <dimen name="text_headline1">96sp</dimen>
+    <dimen name="text_headline2">60sp</dimen>
+    <dimen name="text_headline3">48sp</dimen>
+    <dimen name="text_headline4">34sp</dimen>
+    <dimen name="text_headline5">24sp</dimen>
+    <dimen name="text_headline6">20sp</dimen>
+    <dimen name="text_title">22sp</dimen>
+    <dimen name="text_subtitle">18sp</dimen>
+    <dimen name="text_subtitle1">16sp</dimen>
+    <dimen name="text_subtitle2">14sp</dimen>
+    <dimen name="text_body1">16sp</dimen>
+    <dimen name="text_body2">14sp</dimen>
+    <dimen name="text_button">@dimen/text_body2</dimen>
+    <dimen name="text_button_large">@dimen/text_body1</dimen>
+    <dimen name="text_caption">12sp</dimen>
+    <dimen name="text_overline">10sp</dimen>
+    <dimen name="category_radius">6dp</dimen>
+    <!-- ////////////////////////// -->
+    <!-- End Unified dimensions -->
+    <!-- ////////////////////////// -->
+
+    <dimen name="design_navigation_separator_vertical_padding" tools:override="true">0dp</dimen>
+    <dimen name="invite_iamge_height">160dp</dimen>
+    <dimen name="button_height_medium">48dp</dimen>
+    <dimen name="invited_item_space">6dp</dimen>
+</resources>
+

@@ -1,0 +1,13 @@
+<!--
+ Similar to ic_toolbar_close, but smaller by default.
+ This is helpful for Android APIs that don't offer a way to change size.
+ -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="12dp"
+    android:height="12dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="M12.021,10.544L20.377,2.188C20.785,1.779 21.448,1.779 21.857,2.188C22.265,2.596 22.265,3.259 21.857,3.667L13.501,12.024L21.857,20.38C22.265,20.788 22.265,21.451 21.857,21.86C21.448,22.268 20.785,22.268 20.377,21.86L12.021,13.503L3.665,21.86C3.256,22.268 2.593,22.268 2.185,21.86C1.777,21.451 1.777,20.788 2.185,20.38L10.541,12.024L2.185,3.667C1.777,3.259 1.777,2.596 2.185,2.188C2.593,1.779 3.256,1.779 3.665,2.188L12.021,10.544Z"/>
+</vector>

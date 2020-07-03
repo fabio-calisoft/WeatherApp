@@ -1,0 +1,54 @@
+<resources>
+
+
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="myToolbar">
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?actionBarSize</item>
+        <item name="android:minHeight">?actionBarSize</item>
+        <item name="navigationIcon">@drawable/ic_toolbar_back</item>
+        <item name="android:background">@drawable/toolbar_background</item>
+        <item name="android:theme">@style/myToolbar</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
+
+    <style name="IRL.Widgets.Button" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:maxLines">1</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_button</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="IRL.Widgets.IconButton" parent="IRL.Widgets.Button">
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="android:minWidth">24dp</item>
+        <item name="android:minHeight">24dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconTint">@color/icon_button_foreground</item>
+        <item name="iconSize">16dp</item>
+        <item name="rippleColor">@color/ripple_plain</item>
+    </style>
+
+    <style name="IRL.Widgets.Button.Large">
+        <item name="android:textSize">@dimen/text_button_large</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+</resources>

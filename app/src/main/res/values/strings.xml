@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Weather Demo Fabio</string>
+    <string name="search_image">Search Image</string>
+    <string name="search_image_hint">Try \'Outdoor\'</string>
+</resources>
