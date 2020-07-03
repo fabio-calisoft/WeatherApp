@@ -42,7 +42,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mClearSearch"
-            style="@style/IRL.Widgets.IconButton"
+            style="@style/Style.Widgets.IconButton"
             android:visibility="invisible"
             app:icon="@drawable/ic_common_close" />
     </LinearLayout>
