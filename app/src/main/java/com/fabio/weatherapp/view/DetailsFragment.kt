@@ -18,6 +18,9 @@ import com.fabio.weatherapp.R
 import com.fabio.weatherapp.databinding.FragmentDetailsBinding
 import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -69,7 +72,9 @@ class DetailsFragment : Fragment() {
                 val roundedTemperature = it.consolidated_weather[0].the_temp.roundToInt()
                 text_temperature.text = "$roundedTemperature \u2103"
                 text_main_weather.text = it.consolidated_weather[0].weather_state_name
-                text_last_update.text = it.consolidated_weather[0].created
+                val updatedTime = convertUTC_to_local_Timezone(it.consolidated_weather[0].created)
+                text_last_update.text = "last updated: $updatedTime"
+
                 text_pressure.text = "${it.consolidated_weather[0].air_pressure} mb"
                 text_humidity.text = "${it.consolidated_weather[0].humidity} %"
                 val roundedVisibility = it.consolidated_weather[0].visibility.roundToInt()
@@ -81,15 +86,6 @@ class DetailsFragment : Fragment() {
                 convertWeatherStateToDrawableName(it.consolidated_weather[0].weather_state_abbr)?.let { id ->
                     image_icon.setImageResource(id)
                 }
-
-//                text_wind.setOnClickListener {
-//                    Log.d("fdl", "click Text edit location")
-//                    navigateToSearchLocation()
-//                }
-//                imageViewEdit.setOnClickListener {
-//                    Log.d("fdl", "click Image edit location")
-//                    navigateToSearchLocation()
-//                }
 
 
                 // Wind Arrow
@@ -136,6 +132,23 @@ class DetailsFragment : Fragment() {
             else -> null
         }
 
+    }
+
+    fun convertUTC_to_local_Timezone(sourceDate: String): String {
+        val input = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+        input.timeZone = TimeZone.getTimeZone("UTC")
+        val output = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US)
+        output.timeZone = TimeZone.getDefault()
+
+        var d: Date? = null
+        try {
+            d = input.parse(sourceDate) // "2018-02-02T06:54:57.744Z"
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        val formatted = output.format(d)
+        Log.i("DATE", "" + formatted)
+        return formatted
     }
 
 

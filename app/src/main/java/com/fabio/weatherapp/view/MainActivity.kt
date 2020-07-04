@@ -1,10 +1,9 @@
 package com.fabio.weatherapp.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.fabio.weatherapp.R
-
 
 class MainActivity : AppCompatActivity() {
 

@@ -64,14 +64,15 @@ class SearchCityFragment : Fragment(), TextWatcher {
         rvSearch.adapter = adapter
 
 
-        mSearchEdt.setOnClickListener {
-            mSearchEdt.text?.clear()
-            mSearchEdt.requestFocus()
-            activity?.let { it1 -> DeviceHelper.showKeyboard(mSearchEdt, it1) }
-        }
+//        mSearchEdt.setOnClickListener {
+//            mSearchEdt.text?.clear()
+//            mSearchEdt.requestFocus()
+//            activity?.let { it1 -> DeviceHelper.showKeyboard(mSearchEdt, it1) }
+//        }
         mSearchEdt.addTextChangedListener(this)
 
         mSearchEdt.setOnEditorActionListener { _, actionId, _ ->
+            Log.d("fdl", "setOnEditorActionListener actionId:$actionId")
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 //                searchImage(mSearchEdt.text.toString())
                 DeviceHelper.hideKeyboard(activity)
