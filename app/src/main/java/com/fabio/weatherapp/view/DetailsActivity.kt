@@ -19,11 +19,12 @@ class DetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
+        /*
         viewModel=ViewModelProvider(this).get(DetailsActivityViewModel::class.java)
 
 
         if(intent.hasExtra("name")){
-            tv_location.text=intent.getStringExtra("name")
+//            tv_location.text=intent.getStringExtra("name")
         }
         if(intent.hasExtra("Location")){
             // do a network call
@@ -37,18 +38,19 @@ class DetailsActivity : AppCompatActivity() {
 
         viewModel.showProgress.observe(this, Observer {
             if(it){
-                pgDeatils.visibility= View.VISIBLE
+//                pgDeatils.visibility= View.VISIBLE
             }
             else{
-                pgDeatils.visibility= View.GONE
+//                pgDeatils.visibility= View.GONE
             }
         })
         viewModel.response.observe(this, Observer {
             if (it !=null){
-                tv_Temp.text=it.consolidated_weather[0].the_temp.toString()
+//                tv_Temp.text=it.consolidated_weather[0].the_temp.toString()
                 Log.d("fdl", "consolidated_weather: ${it.consolidated_weather[0]}")
             }
         })
+        */
 
 
     }
