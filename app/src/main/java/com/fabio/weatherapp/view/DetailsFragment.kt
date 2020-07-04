@@ -15,12 +15,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.fabio.weatherapp.R
-import com.fabio.weatherapp.databinding.ActivityDetailsBinding
-import com.fabio.weatherapp.helper.DeviceHelper
+import com.fabio.weatherapp.databinding.FragmentDetailsBinding
 import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
-import kotlinx.android.synthetic.main.activity_details.*
-import kotlinx.android.synthetic.main.rv_location_item.view.*
-import kotlinx.android.synthetic.main.search_container.*
+import kotlinx.android.synthetic.main.fragment_details.*
 import kotlin.math.roundToInt
 
 
@@ -29,7 +26,7 @@ class DetailsFragment : Fragment() {
     private lateinit var viewModel:DetailsActivityViewModel
     private var woeid: Int? = null
     private var locationName: String? = null
-    private lateinit var binding: ActivityDetailsBinding
+    private lateinit var binding: FragmentDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +36,7 @@ class DetailsFragment : Fragment() {
         woeid = arguments?.getInt("WOEID")
         locationName = arguments?.getString("LOCATION_NAME")
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.activity_details, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false)
 
         Log.d("fdl.DetailsFragment", "woeid:$woeid locationName:$locationName")
         binding.fragment = this
@@ -125,7 +122,7 @@ class DetailsFragment : Fragment() {
      * Takes the state of the weather and return the appropriate id
      * of the drawable or null if the state is not found
      */
-    fun convertWeatherStateToDrawableName(weather_state_abbr: String): Int? {
+    private fun convertWeatherStateToDrawableName(weather_state_abbr: String): Int? {
         return when(weather_state_abbr) {
             "c" -> R.drawable.ic_c
             "h" -> R.drawable.ic_h

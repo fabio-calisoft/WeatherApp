@@ -9,15 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.SearchAdapter
+import com.fabio.weatherapp.databinding.FragmentSearchCityBinding
 import com.fabio.weatherapp.helper.DeviceHelper
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_search_city.*
-import kotlinx.android.synthetic.main.search_container.*
 
 
 class SearchCityFragment : Fragment(), TextWatcher {
@@ -25,13 +26,16 @@ class SearchCityFragment : Fragment(), TextWatcher {
     private lateinit var viewModel: SearchActivityViewModel
 
     private lateinit var adapter: SearchAdapter
+    private lateinit var binding: FragmentSearchCityBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_search_city, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_city, container, false)
+        binding.fragment = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,10 +57,13 @@ class SearchCityFragment : Fragment(), TextWatcher {
         })
 
         viewModel.locationList.observe(viewLifecycleOwner, Observer {
-            it.forEach { mLoc ->
-                Log.d("fdl", "setLocation ${mLoc.title}")
+            it?.let { aList->
+                aList.forEach { mLoc ->
+                    Log.d("fdl", "setLocation ${mLoc.title}")
+                }
+                adapter.setLocation(aList)
             }
-            adapter.setLocation(it)
+
         })
         adapter = SearchAdapter(activity as Context, this)
         rvSearch.adapter = adapter
@@ -90,6 +97,11 @@ class SearchCityFragment : Fragment(), TextWatcher {
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         Log.d("fdl", "onTextChanged: $p0")
         viewModel.searchLocation(mSearchEdt.text.toString())
+    }
+
+    fun cleanSearchView() {
+        Log.d("fdl", "clean")
+        mSearchEdt.text.clear()
     }
 
 
