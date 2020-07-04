@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/searchCityFragment">
+
+    <fragment
+        android:id="@+id/searchCityFragment"
+        android:name="com.fabio.weatherapp.view.SearchCityFragment"
+        android:label="SearchCityFragment" >
+        <action
+            android:id="@+id/action_searchCityFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.fabio.weatherapp.view.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="woeid"
+            app:argType="integer" />
+    </fragment>
+</navigation>
