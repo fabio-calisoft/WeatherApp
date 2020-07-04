@@ -9,12 +9,18 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.fabio.weatherapp.R
+import com.fabio.weatherapp.databinding.ActivityDetailsBinding
+import com.fabio.weatherapp.helper.DeviceHelper
 import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.rv_location_item.view.*
+import kotlinx.android.synthetic.main.search_container.*
 import kotlin.math.roundToInt
 
 
@@ -23,6 +29,7 @@ class DetailsFragment : Fragment() {
     private lateinit var viewModel:DetailsActivityViewModel
     private var woeid: Int? = null
     private var locationName: String? = null
+    private lateinit var binding: ActivityDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +39,11 @@ class DetailsFragment : Fragment() {
         woeid = arguments?.getInt("WOEID")
         locationName = arguments?.getString("LOCATION_NAME")
 
+        binding = DataBindingUtil.inflate(inflater, R.layout.activity_details, container, false)
+
         Log.d("fdl.DetailsFragment", "woeid:$woeid locationName:$locationName")
-        return inflater.inflate(R.layout.activity_details, container, false)
+        binding.fragment = this
+        return binding.root
 
     }
 
@@ -49,12 +59,12 @@ class DetailsFragment : Fragment() {
         }
 
         viewModel.showProgress.observe(viewLifecycleOwner, Observer {
-//            if(it){
-//                pgDeatils.visibility= View.VISIBLE
-//            }
-//            else{
-//                pgDeatils.visibility= View.GONE
-//            }
+            if(it){
+                mProgressBar.visibility= View.VISIBLE
+            }
+            else{
+                mProgressBar.visibility= View.GONE
+            }
         })
         viewModel.response.observe(viewLifecycleOwner, Observer {
             if (it !=null){
@@ -75,10 +85,19 @@ class DetailsFragment : Fragment() {
                     image_icon.setImageResource(id)
                 }
 
-                val windDirection = it.consolidated_weather[0].wind_direction
+//                text_wind.setOnClickListener {
+//                    Log.d("fdl", "click Text edit location")
+//                    navigateToSearchLocation()
+//                }
+//                imageViewEdit.setOnClickListener {
+//                    Log.d("fdl", "click Image edit location")
+//                    navigateToSearchLocation()
+//                }
+
 
 
                 // Wind Arrow
+                val windDirection = it.consolidated_weather[0].wind_direction
                 val rotateAnimation = RotateAnimation(
                     windDirection.toFloat(),
                     0.0f,
@@ -96,6 +115,10 @@ class DetailsFragment : Fragment() {
             }
         })
 
+    }
+
+    fun navigateToSearchLocation() {
+        parentFragment?.findNavController()?.navigate(R.id.detailsFragment_to_searchCityFragment)
     }
 
     /**

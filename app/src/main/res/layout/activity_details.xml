@@ -1,28 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools" >
+<data>
+    <variable
+        name="fragment"
+        type="com.fabio.weatherapp.view.DetailsFragment" />
+</data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg"
-    tools:context=".view.MainActivity">
+    tools:context=".view.DetailsFragment">
 
-    <TextView
-        android:id="@+id/tv_locationName"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/lr_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/lato_light"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="32sp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Messina" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_locationName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_light"
+            android:gravity="center"
+            android:onClick="@{()->fragment.navigateToSearchLocation()}"
+            android:text="Messina"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="32sp" />
+
+        <ImageView
+            android:id="@+id/imageViewEdit"
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_marginLeft="10sp"
+            android:onClick="@{()->fragment.navigateToSearchLocation()}"
+            android:src="@drawable/edit"
+            app:tint="@color/white" />
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/image_icon"
@@ -30,11 +56,11 @@
         android:layout_height="100dp"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/ic_rain"
         android:scaleType="centerCrop"
+        android:src="@drawable/ic_rain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_locationName" />
+        app:layout_constraintTop_toBottomOf="@+id/lr_container" />
 
     <TextView
         android:id="@+id/text_temperature"
@@ -43,13 +69,13 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/lato_light"
         android:gravity="center"
+        android:text="29\u2103"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="64sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_icon"
-        android:text="29\u2103" />
+        app:layout_constraintTop_toBottomOf="@+id/image_icon" />
 
     <TextView
         android:id="@+id/text_main_weather"
@@ -58,19 +84,20 @@
         android:ellipsize="end"
         android:fontFamily="@font/noto_sans"
         android:maxLines="2"
+        android:text="Cloudy"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_temperature"
-        android:text="Cloudy" />
+        app:layout_constraintTop_toBottomOf="@+id/text_temperature" />
 
     <TextView
         android:id="@+id/text_last_update"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text="Last updated: 08/10 21:35 (Asia/Tokyo)"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"
@@ -78,8 +105,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_main_weather"
-        app:layout_goneMarginBottom="48dp"
-        android:text="Last updated: 08/10 21:35 (Asia/Tokyo)" />
+        app:layout_goneMarginBottom="48dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_live"
@@ -187,6 +213,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/nunito_sans"
                         android:maxLines="1"
+                        android:text="1007.0 mb 22222222222222"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
@@ -195,8 +222,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/imageView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed"
-                        android:text="1007.0 mb 22222222222222" />
+                        app:layout_constraintVertical_chainStyle="packed" />
 
                     <TextView
                         android:id="@+id/textView2"
@@ -253,6 +279,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/nunito_sans"
                         android:maxLines="1"
+                        android:text="69 %"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
@@ -261,8 +288,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed"
-                        android:text="69 %" />
+                        app:layout_constraintVertical_chainStyle="packed" />
 
                     <TextView
                         android:id="@+id/textView3"
@@ -322,11 +348,11 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
-                        app:tint="@color/white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/wind_arrow" />
+                        app:srcCompat="@drawable/wind_arrow"
+                        app:tint="@color/white" />
 
                     <TextView
                         android:id="@+id/text_wind"
@@ -337,6 +363,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/nunito_sans"
                         android:maxLines="1"
+                        android:text="0.0 knt"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
@@ -344,8 +371,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/imageViewWindDirection"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="0.0 knt" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textViewWind"
@@ -417,6 +443,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/nunito_sans"
                         android:maxLines="1"
+                        android:text="16.1 km"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
@@ -424,8 +451,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/imageView4"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="16.1 km" />
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.gridlayout.widget.GridLayout>
@@ -434,8 +460,20 @@
 
     </androidx.cardview.widget.CardView>
 
+    <ProgressBar
+        android:id="@+id/mProgressBar"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="200sp"
+        android:layout_height="200sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_icon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+</layout>

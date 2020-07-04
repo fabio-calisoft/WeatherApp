@@ -18,5 +18,8 @@
         <argument
             android:name="woeid"
             app:argType="integer" />
+        <action
+            android:id="@+id/detailsFragment_to_searchCityFragment"
+            app:destination="@id/searchCityFragment" />
     </fragment>
 </navigation>

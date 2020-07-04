@@ -40,20 +40,11 @@ class SearchAdapter(var context: Context, val parentFragment: Fragment) :
         holder.itemView.tv_locationName.text = currLocation.title
         holder.itemView.tv_latlong.text = currLocation.latt_long
         holder.itemView.root_view.setOnClickListener {
-
             val bundle = bundleOf(
                 "WOEID" to currLocation.woeid,
                 "LOCATION_NAME" to currLocation.title
             )
-
-//            var bundle = bundleOf("woeid" to currLocation.woeid)
-
             parentFragment.findNavController().navigate(R.id.action_searchCityFragment_to_detailsFragment, bundle)
-
-//            val intent = Intent(context, DetailsFragment::class.java)
-//            intent.putExtra("Location", currLocation.woeid)
-//            intent.putExtra("name", currLocation.title)
-//            context.startActivity(intent)
         }
     }
 }
