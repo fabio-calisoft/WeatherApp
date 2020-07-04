@@ -9,12 +9,13 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-const val BASE_URL="https://www.metaweather.com/api/location/"
+const val BASE_URL = "https://www.metaweather.com/api/location/"
+
 interface WeatherNetwork {
 
     @GET("search?")
-    fun getLocation(@Query("query")location:String): Call<List<Location>>
+    fun getLocation(@Query("query") location: String): Call<List<Location>>
 
     @GET("{woeid}")
-    fun getWeather(@Path("woeid")woeid:Int):Call<WeatherResponse>
+    fun getWeather(@Path("woeid") woeid: Int): Call<WeatherResponse>
 }

@@ -4,11 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.fabio.weatherapp.model.WeatherResponse
-import com.fabio.weatherapp.repository.DetailsActivityRespository
+import com.fabio.weatherapp.repository.DetailsActivityRepository
 
 class DetailsActivityViewModel(application: Application):AndroidViewModel(application) {
 
-    private val repository = DetailsActivityRespository(application)
+    private val repository = DetailsActivityRepository(application)
     val showProgress: LiveData<Boolean>
     val response:LiveData<WeatherResponse>
     init {

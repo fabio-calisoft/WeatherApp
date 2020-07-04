@@ -1,6 +1,5 @@
 package com.fabio.weatherapp.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.fabio.weatherapp.R
 import com.fabio.weatherapp.model.Location
 import kotlinx.android.synthetic.main.rv_location_item.view.*
 
-class SearchAdapter(var context: Context, val parentFragment: Fragment) :
+class SearchAdapter(private val parentFragment: Fragment) :
     RecyclerView.Adapter<SearchAdapter.SearchAdapterViewHolder>() {
 
     private var list: List<Location> = ArrayList()
@@ -44,7 +43,8 @@ class SearchAdapter(var context: Context, val parentFragment: Fragment) :
                 "WOEID" to currLocation.woeid,
                 "LOCATION_NAME" to currLocation.title
             )
-            parentFragment.findNavController().navigate(R.id.action_searchCityFragment_to_detailsFragment, bundle)
+            parentFragment.findNavController()
+                .navigate(R.id.action_searchCityFragment_to_detailsFragment, bundle)
         }
     }
 }

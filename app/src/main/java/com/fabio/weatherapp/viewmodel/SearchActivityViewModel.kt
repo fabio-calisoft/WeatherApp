@@ -4,11 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.fabio.weatherapp.model.Location
-import com.fabio.weatherapp.repository.SearchActivityRespository
+import com.fabio.weatherapp.repository.SearchActivityRepository
 
 class SearchActivityViewModel(application: Application) :AndroidViewModel(application) {
 
-    private val repository=SearchActivityRespository(application)
+    private val repository=SearchActivityRepository(application)
     val showProgress:LiveData<Boolean>
 
     val locationList:LiveData<List<Location>>

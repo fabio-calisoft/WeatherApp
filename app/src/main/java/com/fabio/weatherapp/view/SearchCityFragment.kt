@@ -1,6 +1,5 @@
 package com.fabio.weatherapp.view
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.SearchAdapter
 import com.fabio.weatherapp.databinding.FragmentSearchCityBinding
-import com.fabio.weatherapp.helper.DeviceHelper
+import com.fabio.weatherapp.DeviceHelper
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_search_city.*
 
@@ -44,10 +43,6 @@ class SearchCityFragment : Fragment(), TextWatcher {
 
         viewModel = ViewModelProvider(this).get(SearchActivityViewModel::class.java)
 
-//        ivSearch.setOnClickListener {
-//          viewModel.searchLocation(mSearchEdt.text.toString())
-//        }
-
         viewModel.showProgress.observe(viewLifecycleOwner, Observer {
             if (it) {
                 pgSearch.visibility = View.VISIBLE
@@ -57,7 +52,7 @@ class SearchCityFragment : Fragment(), TextWatcher {
         })
 
         viewModel.locationList.observe(viewLifecycleOwner, Observer {
-            it?.let { aList->
+            it?.let { aList ->
                 aList.forEach { mLoc ->
                     Log.d("fdl", "setLocation ${mLoc.title}")
                 }
@@ -65,7 +60,7 @@ class SearchCityFragment : Fragment(), TextWatcher {
             }
 
         })
-        adapter = SearchAdapter(activity as Context, this)
+        adapter = SearchAdapter(this)
         rvSearch.adapter = adapter
 
 

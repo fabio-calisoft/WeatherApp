@@ -1,11 +1,10 @@
 package com.fabio.weatherapp.model
 
-class WeatherResponse (
+data class WeatherResponse(
     val consolidated_weather: List<ConsolidatedWeather>,
-
-    val title:String,
+    val title: String,
     val location_type: String,
-    val woeid:Int,
-    val lattLong:String,
-    val time:String
+    val woeid: Int,
+    val lattLong: String,
+    val time: String
 )

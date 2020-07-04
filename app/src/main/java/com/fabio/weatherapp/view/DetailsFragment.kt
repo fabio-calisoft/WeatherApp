@@ -23,7 +23,7 @@ import kotlin.math.roundToInt
 
 class DetailsFragment : Fragment() {
 
-    private lateinit var viewModel:DetailsActivityViewModel
+    private lateinit var viewModel: DetailsActivityViewModel
     private var woeid: Int? = null
     private var locationName: String? = null
     private lateinit var binding: FragmentDetailsBinding
@@ -48,7 +48,7 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        viewModel=ViewModelProvider(this).get(DetailsActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(DetailsActivityViewModel::class.java)
 
         tv_locationName.text = locationName
         woeid?.let {
@@ -56,15 +56,14 @@ class DetailsFragment : Fragment() {
         }
 
         viewModel.showProgress.observe(viewLifecycleOwner, Observer {
-            if(it){
-                mProgressBar.visibility= View.VISIBLE
-            }
-            else{
-                mProgressBar.visibility= View.GONE
+            if (it) {
+                mProgressBar.visibility = View.VISIBLE
+            } else {
+                mProgressBar.visibility = View.GONE
             }
         })
         viewModel.response.observe(viewLifecycleOwner, Observer {
-            if (it !=null){
+            if (it != null) {
                 Log.d("fdl", "consolidated_weather: ${it.consolidated_weather[0]}")
 
                 val roundedTemperature = it.consolidated_weather[0].the_temp.roundToInt()
@@ -76,9 +75,10 @@ class DetailsFragment : Fragment() {
                 val roundedVisibility = it.consolidated_weather[0].visibility.roundToInt()
                 text_visibility.text = "$roundedVisibility mi"
                 val roundedWindSpeed = it.consolidated_weather[0].wind_speed.roundToInt()
-                text_wind.text = "$roundedWindSpeed knt (${it.consolidated_weather[0].wind_direction_compass})"
+                text_wind.text =
+                    "$roundedWindSpeed knt (${it.consolidated_weather[0].wind_direction_compass})"
 
-                convertWeatherStateToDrawableName(it.consolidated_weather[0].weather_state_abbr)?.let {id ->
+                convertWeatherStateToDrawableName(it.consolidated_weather[0].weather_state_abbr)?.let { id ->
                     image_icon.setImageResource(id)
                 }
 
@@ -90,7 +90,6 @@ class DetailsFragment : Fragment() {
 //                    Log.d("fdl", "click Image edit location")
 //                    navigateToSearchLocation()
 //                }
-
 
 
                 // Wind Arrow
@@ -123,7 +122,7 @@ class DetailsFragment : Fragment() {
      * of the drawable or null if the state is not found
      */
     private fun convertWeatherStateToDrawableName(weather_state_abbr: String): Int? {
-        return when(weather_state_abbr) {
+        return when (weather_state_abbr) {
             "c" -> R.drawable.ic_c
             "h" -> R.drawable.ic_h
             "hc" -> R.drawable.ic_hc
@@ -138,7 +137,6 @@ class DetailsFragment : Fragment() {
         }
 
     }
-
 
 
 }
