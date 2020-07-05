@@ -547,10 +547,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_forecast" />
 
-
-            <ProgressBar
+            <include
                 android:id="@+id/mProgressBar"
                 style="?android:attr/progressBarStyle"
+
+
+                layout="@layout/loading_progress"
                 android:layout_width="200sp"
                 android:layout_height="200sp"
                 android:layout_marginStart="8dp"
@@ -559,7 +561,10 @@
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_icon" />
+                app:layout_constraintTop_toBottomOf="@+id/image_icon"
+
+                />
+
 
             <ImageView
                 android:id="@+id/imageViewCalendar"

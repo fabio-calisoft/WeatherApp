@@ -1,3 +1,16 @@
+Application
+when the app starts, it looks for the local gps position.
+If available, it queries the backend to retrieve the closest weather location
+If found, it queries the backend for the current and forecast weather
+
+There's a calendar button of the left side of the Current Date.
+If clicked, it opens a calendar and let the user pick a date.
+Then, the app retrieve the historical weather for that location and date
+
+On the left of the location name, there's an Edit button.
+Use this button to manually change the location
+
+
 Use of:
 
 MVVM design

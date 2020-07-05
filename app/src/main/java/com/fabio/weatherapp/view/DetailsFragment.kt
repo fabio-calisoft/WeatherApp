@@ -35,6 +35,7 @@ import com.fabio.weatherapp.model.ConsolidatedWeather
 import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.loading_progress.view.*
 import ru.cleverpumpkin.calendar.CalendarDate
 import ru.cleverpumpkin.calendar.CalendarView
 import kotlin.math.roundToInt
@@ -79,11 +80,11 @@ class DetailsFragment : Fragment() {
 
 
         viewModel.showProgress.observe(viewLifecycleOwner, Observer {
-            manageProgressBar(it)
+            manageProgressBar(it, "Loading Weather data")
         })
 
         viewModelNetwork.showProgress.observe(viewLifecycleOwner, Observer {
-            manageProgressBar(it)
+            manageProgressBar(it, "Loading Location data")
         })
 
         viewModelNetwork.locationList.observe(viewLifecycleOwner, Observer {
@@ -251,7 +252,7 @@ class DetailsFragment : Fragment() {
                 Log.d("fdl", "readLocation granted")
                 val locationManager =
                     it.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
-                manageProgressBar(true)
+                manageProgressBar(true, "Reading gps location")
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, 5000, 10f,
 
@@ -265,7 +266,7 @@ class DetailsFragment : Fragment() {
                                 location.latitude,
                                 location.longitude
                             )
-                            manageProgressBar(false)
+                            manageProgressBar(false, "Reading gps location")
 
                         }
 
@@ -291,8 +292,9 @@ class DetailsFragment : Fragment() {
     }
 
 
-    private fun manageProgressBar(isActive: Boolean) {
+    private fun manageProgressBar(isActive: Boolean, message: String) {
         if (isActive) {
+            mProgressBar.textViewMessage.text = message
             mProgressBar.visibility = View.VISIBLE
         } else {
             mProgressBar.visibility = View.GONE
