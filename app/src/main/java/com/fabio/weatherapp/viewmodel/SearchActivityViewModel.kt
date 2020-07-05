@@ -18,8 +18,12 @@ class SearchActivityViewModel(application: Application) :AndroidViewModel(applic
         this.locationList=repository.locationList
     }
 
-    fun searchLocation(location:String){
-       repository.searchLocation(location)
+    fun searchLocationByName(location:String){
+       repository.searchLocationByName(location)
+    }
+
+    fun searchLocationByCoordinates(latt: Float, long:Float){
+        repository.searchLocationByCoordinates(latt, long)
     }
 
 

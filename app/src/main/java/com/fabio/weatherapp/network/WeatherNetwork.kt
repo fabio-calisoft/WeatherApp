@@ -14,7 +14,10 @@ const val BASE_URL = "https://www.metaweather.com/api/location/"
 interface WeatherNetwork {
 
     @GET("search?")
-    fun getLocation(@Query("query") location: String): Call<List<Location>>
+    fun getLocationByName(@Query("query") location: String): Call<List<Location>>
+
+    @GET("search?")
+    fun getLocationByCoordinates(@Query("lattlong") lattlong: String): Call<List<Location>>
 
     @GET("{woeid}")
     fun getWeather(@Path("woeid") woeid: Int): Call<WeatherResponse>

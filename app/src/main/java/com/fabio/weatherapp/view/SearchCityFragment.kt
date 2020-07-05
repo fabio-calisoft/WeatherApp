@@ -92,7 +92,7 @@ class SearchCityFragment : Fragment(), TextWatcher {
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         Log.d("fdl", "onTextChanged: $p0")
-        viewModel.searchLocation(mSearchEdt.text.toString())
+        viewModel.searchLocationByName(mSearchEdt.text.toString())
     }
 
     fun cleanSearchView() {

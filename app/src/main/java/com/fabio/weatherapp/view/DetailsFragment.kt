@@ -25,13 +25,16 @@ import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.ForecastAdapter
 import com.fabio.weatherapp.databinding.FragmentDetailsBinding
 import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
+import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.fragment_search_city.*
 import kotlin.math.roundToInt
 
 
 class DetailsFragment : Fragment() {
 
     private lateinit var viewModel: DetailsActivityViewModel
+    private lateinit var viewModelNetwork: SearchActivityViewModel
     private var woeid: Int? = null
     private var locationName: String? = null
     private lateinit var binding: FragmentDetailsBinding
@@ -45,6 +48,7 @@ class DetailsFragment : Fragment() {
         woeid = arguments?.getInt("WOEID")
 //        woeid = 44418
         locationName = arguments?.getString("LOCATION_NAME")
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false)
 
         Log.d("fdl.DetailsFragment", "woeid:$woeid locationName:$locationName")
@@ -57,12 +61,11 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(DetailsActivityViewModel::class.java)
+        viewModelNetwork = ViewModelProvider(this).get(SearchActivityViewModel::class.java)
 
         tv_locationName.text = locationName
 
-        woeid?.let {
-            viewModel.getWeather(it)
-        }
+
 
         viewModel.showProgress.observe(viewLifecycleOwner, Observer {
             if (it) {
@@ -71,6 +74,38 @@ class DetailsFragment : Fragment() {
                 mProgressBar.visibility = View.GONE
             }
         })
+
+        viewModelNetwork.showProgress.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                mProgressBar.visibility = View.VISIBLE
+            } else {
+                mProgressBar.visibility = View.GONE
+            }
+        })
+
+        viewModelNetwork.locationList.observe(viewLifecycleOwner, Observer {
+            it?.let { aList ->
+                aList.forEach { mLoc ->
+                    Log.d("fdl", "XXXX setLocation ${mLoc.title}")
+                }
+                tv_locationName.text = aList[0].title
+                woeid?.let {
+                    viewModel.getWeather(aList[0].woeid)
+                }
+            }
+
+        })
+
+
+        if (woeid == null || TextUtils.isEmpty(locationName)) {
+            // let's use Location Manager
+            Log.d("fdl", "let's use Location Manager")
+            viewModelNetwork.searchLocationByCoordinates(37.42f, -122.08f)
+        } else {
+            woeid?.let {
+                viewModel.getWeather(it)
+            }
+        }
 
 
         // RecyclerView Forecast
