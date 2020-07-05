@@ -42,8 +42,8 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         //TODO DEBUG
-//        woeid = arguments?.getInt("WOEID")
-        woeid = 44418
+        woeid = arguments?.getInt("WOEID")
+//        woeid = 44418
         locationName = arguments?.getString("LOCATION_NAME")
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false)
 
@@ -114,14 +114,22 @@ class DetailsFragment : Fragment() {
                 val roundedVisibility = mWeather.visibility.roundToInt()
                 val roundedWindSpeed = mWeather.wind_speed.roundToInt()
 
-                text_temperature.text = resources.getString(R.string.temperature, roundedTemperature.toString())
+                text_temperature.text =
+                    resources.getString(R.string.temperature, roundedTemperature.toString())
                 text_main_weather.text = it.consolidated_weather[0].weather_state_name
                 val updatedTime = convertUTC_to_local_Timezone(it.consolidated_weather[0].created)
                 text_last_update.text = resources.getString(R.string.last_updated, updatedTime)
-                text_pressure.text = resources.getString(R.string.air_pressure, roundedAirPressure.toString())
-                text_humidity.text = resources.getString(R.string.air_pressure, mWeather.humidity.toString())
-                text_visibility.text = resources.getString(R.string.visibility, roundedVisibility.toString())
-                text_wind.text = resources.getString(R.string.wind_speed, roundedWindSpeed.toString(), mWeather.wind_direction_compass)
+                text_pressure.text =
+                    resources.getString(R.string.air_pressure, roundedAirPressure.toString())
+                text_humidity.text =
+                    resources.getString(R.string.air_pressure, mWeather.humidity.toString())
+                text_visibility.text =
+                    resources.getString(R.string.visibility, roundedVisibility.toString())
+                text_wind.text = resources.getString(
+                    R.string.wind_speed,
+                    roundedWindSpeed.toString(),
+                    mWeather.wind_direction_compass
+                )
 
                 convertWeatherStateToDrawableName(mWeather.weather_state_abbr)?.let { id ->
                     image_icon.setImageResource(id)

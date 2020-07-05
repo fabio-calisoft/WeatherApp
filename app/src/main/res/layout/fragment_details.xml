@@ -40,7 +40,7 @@
                     android:fontFamily="@font/lato_light"
                     android:gravity="center"
                     android:onClick="@{()->fragment.navigateToSearchLocation()}"
-                    android:text="Messina"
+                    android:text="@string/default_null"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="32sp" />
@@ -49,10 +49,11 @@
                     android:id="@+id/imageViewEdit"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
-                    android:layout_marginLeft="10sp"
+                    android:layout_marginStart="10sp"
                     android:onClick="@{()->fragment.navigateToSearchLocation()}"
                     android:src="@drawable/edit"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    android:contentDescription="@string/app_name" />
             </LinearLayout>
 
 
@@ -75,7 +76,7 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
-                android:text="29\u2103"
+                android:text="@string/default_null"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="64sp"
@@ -90,7 +91,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/noto_sans"
                 android:maxLines="2"
-                android:text="Cloudy"
+                android:text="@string/default_null"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="22sp"
@@ -103,7 +104,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Last updated: 08/10 21:35 (Asia/Tokyo)"
+                android:text="@string/default_null"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
@@ -120,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="44dp"
-                android:text="Sunrise"
+                android:text="@string/sunrise"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
@@ -135,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="44dp"
-                android:text="Sunrise"
+                android:text="@string/sunset"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
@@ -149,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text=" --- "
+                android:text="@string/default_null"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
@@ -163,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text=" --- "
+                android:text="@string/default_null"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
@@ -182,7 +183,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_last_update"
                 app:srcCompat="@drawable/sunrise"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                android:contentDescription="@string/app_name" />
 
             <ImageView
                 android:id="@+id/sunset_logo"
@@ -194,7 +196,8 @@
                 app:layout_constraintStart_toEndOf="@+id/text_label_sunrise"
                 app:layout_constraintTop_toBottomOf="@+id/text_last_update"
                 app:srcCompat="@drawable/sunset"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                android:contentDescription="@string/app_name" />
 
 
             <androidx.cardview.widget.CardView
@@ -236,7 +239,6 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="1"
                             android:textColor="@android:color/white"
                             android:textSize="20sp"
                             app:layout_column="0"
@@ -253,7 +255,8 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_detail_pressure" />
+                                app:srcCompat="@drawable/ic_detail_pressure"
+                                android:contentDescription="@string/app_name" />
 
                             <TextView
                                 android:id="@+id/text_pressure"
@@ -264,7 +267,7 @@
                                 android:ellipsize="end"
                                 android:fontFamily="@font/nunito_sans"
                                 android:maxLines="1"
-                                android:text="1007.0 mb 22222222222222"
+                                android:text="@string/default_null"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
                                 android:textSize="16sp"
@@ -281,7 +284,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="16dp"
                                 android:fontFamily="@font/nunito"
-                                android:text="Pressure"
+                                android:text="@string/pressure"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -302,7 +305,6 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="2"
                             android:textColor="@android:color/white"
                             android:textSize="20sp"
                             app:layout_column="2"
@@ -319,7 +321,8 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_detail_hum" />
+                                app:srcCompat="@drawable/ic_detail_hum"
+                                android:contentDescription="@string/app_name" />
 
                             <TextView
                                 android:id="@+id/text_humidity"
@@ -330,7 +333,7 @@
                                 android:ellipsize="end"
                                 android:fontFamily="@font/nunito_sans"
                                 android:maxLines="1"
-                                android:text="69 %"
+                                android:text="@string/default_null"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
                                 android:textSize="16sp"
@@ -347,7 +350,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="16dp"
                                 android:fontFamily="@font/nunito"
-                                android:text="Humidity"
+                                android:text="@string/humidity_label"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -385,7 +388,6 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="3"
                             android:textColor="@android:color/white"
                             android:textSize="20sp"
                             app:layout_column="0"
@@ -403,7 +405,8 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/wind_arrow"
-                                app:tint="@color/white" />
+                                app:tint="@color/white"
+                                android:contentDescription="@string/app_name" />
 
                             <TextView
                                 android:id="@+id/text_wind"
@@ -414,7 +417,7 @@
                                 android:ellipsize="end"
                                 android:fontFamily="@font/nunito_sans"
                                 android:maxLines="1"
-                                android:text="0.0 knt"
+                                android:text="@string/default_null"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
                                 android:textSize="16sp"
@@ -430,7 +433,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="16dp"
                                 android:fontFamily="@font/nunito"
-                                android:text="Wind"
+                                android:text="@string/wind_label"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -451,7 +454,6 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="4"
                             android:textColor="@android:color/white"
                             android:textSize="20sp"
                             app:layout_column="2"
@@ -464,7 +466,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="16dp"
                                 android:fontFamily="@font/nunito"
-                                android:text="Visibility"
+                                android:text="@string/visibility_label"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -483,7 +485,8 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_detail_visibility" />
+                                app:srcCompat="@drawable/ic_detail_visibility"
+                                android:contentDescription="@string/app_name" />
 
                             <TextView
                                 android:id="@+id/text_visibility"
@@ -494,7 +497,7 @@
                                 android:ellipsize="end"
                                 android:fontFamily="@font/nunito_sans"
                                 android:maxLines="1"
-                                android:text="16.1 km"
+                                android:text="@string/default_null"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/white"
                                 android:textSize="16sp"
@@ -528,7 +531,7 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/nunito_sans"
                 android:paddingBottom="4dp"
-                android:text="Forecast"
+                android:text="@string/forecast"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"

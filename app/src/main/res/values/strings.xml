@@ -7,4 +7,12 @@
     <string name="humidity">%1$s %</string>
     <string name="visibility">%1$s mi</string>
     <string name="wind_speed">%1$s knt (%2$s)</string>
+    <string name="default_null"> --- </string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity_label">Humidity</string>
+    <string name="wind_label">Wind</string>
+    <string name="visibility_label">Visibility</string>
+    <string name="forecast">Forecast</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
 </resources>

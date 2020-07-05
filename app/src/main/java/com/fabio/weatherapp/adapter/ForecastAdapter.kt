@@ -50,7 +50,8 @@ class ForecastAdapter(private val parentFragment: Fragment) :
         }
         holder.itemView.text_forecast_date.text = convertDate(currLocation.applicable_date)
         holder.itemView.text_main_weather.text = currLocation.weather_state_name
-        holder.itemView.text_forecast_temperature.text = "$roundedTemp \u2103"
+        holder.itemView.text_forecast_temperature.text =
+            holder.itemView.resources.getString(R.string.temperature, roundedTemp.toString())
         holder.itemView.text_forecast_wind.text = "Wind speed $roundedWindSpeed knt"
         holder.itemView.text_forecast_humidity.text = "Humidity: $roundedHumidity %"
         holder.itemView.text_forecast_pressure.text = "Pressure: $roundedAirPressure mb"
