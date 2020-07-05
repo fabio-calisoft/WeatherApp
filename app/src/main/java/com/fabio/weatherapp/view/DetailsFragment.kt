@@ -23,13 +23,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fabio.weatherapp.DateHelper
+import com.fabio.weatherapp.DateHelper.convertUTC_to_local_Timezone
+import com.fabio.weatherapp.DateHelper.extractTime
 import com.fabio.weatherapp.DeviceHelper.checkLocationPermission
-import com.fabio.weatherapp.DeviceHelper.convertUTC_to_local_Timezone
 import com.fabio.weatherapp.DeviceHelper.convertWeatherStateToDrawableName
-import com.fabio.weatherapp.DeviceHelper.extractTime
 import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.ForecastAdapter
 import com.fabio.weatherapp.databinding.FragmentDetailsBinding
+import com.fabio.weatherapp.model.ConsolidatedWeather
 import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -47,7 +49,7 @@ class DetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var calendarView: CalendarView
 
-        override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,8 +89,9 @@ class DetailsFragment : Fragment() {
         viewModelNetwork.locationList.observe(viewLifecycleOwner, Observer {
             it?.let { aList ->
                 aList.forEach { mLoc ->
-                    Log.d("fdl", "XXXX setLocation ${mLoc.title}")
+                    Log.d("fdl", "Location found: ${mLoc.title}")
                 }
+                woeid = aList[0].woeid
                 tv_locationName.text = aList[0].title
                 woeid?.let {
                     viewModel.getWeather(aList[0].woeid)
@@ -117,7 +120,7 @@ class DetailsFragment : Fragment() {
 
 
         // RecyclerView Forecast
-        val mForecastAdapter = ForecastAdapter(this)
+        val mForecastAdapter = ForecastAdapter()
         forecastRV.adapter = mForecastAdapter
         forecastRV.isNestedScrollingEnabled = false
         val mLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -136,6 +139,19 @@ class DetailsFragment : Fragment() {
             calendar_view.visibility = View.VISIBLE
         }
 
+        viewModel.hourlyResponse.observe(viewLifecycleOwner, Observer {
+            // received data for a day in the past
+            if (it != null) {
+                Log.d("fdl", "single ConsolidatedWeather: $it")
+                updateTodayWeatherUI(it)
+
+                // remove forecast
+                forecastRV.visibility = View.INVISIBLE
+                text_forecast.visibility = View.INVISIBLE
+            }
+
+
+        })
 
 
 
@@ -143,9 +159,9 @@ class DetailsFragment : Fragment() {
             if (it != null) {
                 Log.d("fdl", "consolidated_weather: ${it.consolidated_weather[0]}")
 
-                // XXXXX
-                // fdl [0] is today
-                if (it.consolidated_weather.size>1) {
+                // Forecast +++ fdl [0] is today
+                forecastRV.visibility = View.VISIBLE
+                if (it.consolidated_weather.size > 1) {
                     text_forecast.visibility = View.VISIBLE
                     mForecastAdapter.weatherDataList =
                         it.consolidated_weather.subList(1, it.consolidated_weather.size)
@@ -153,6 +169,7 @@ class DetailsFragment : Fragment() {
                 } else {
                     text_forecast.visibility = View.INVISIBLE
                 }
+                // Forecast --- fdl [0] is today
 
                 Log.d("fdl.time", "it.sun_rise ${it.sun_rise}")
                 Log.d("fdl.time", "it.sun_set ${it.sun_set}")
@@ -163,53 +180,56 @@ class DetailsFragment : Fragment() {
                     extractTime(it.sun_set)
                 }
 
-                val mWeather = it.consolidated_weather[0]
 
-                val roundedTemperature = mWeather.the_temp.roundToInt()
-                val roundedAirPressure = mWeather.air_pressure.roundToInt()
-                val roundedVisibility = mWeather.visibility.roundToInt()
-                val roundedWindSpeed = mWeather.wind_speed.roundToInt()
-
-                text_temperature.text =
-                    resources.getString(R.string.temperature, roundedTemperature.toString())
-                text_main_weather.text = it.consolidated_weather[0].weather_state_name
-                val updatedTime = convertUTC_to_local_Timezone(it.consolidated_weather[0].created)
-                text_last_update.text = resources.getString(R.string.last_updated, updatedTime)
-                text_pressure.text =
-                    resources.getString(R.string.air_pressure, roundedAirPressure.toString())
-                text_humidity.text =
-                    resources.getString(R.string.air_pressure, mWeather.humidity.toString())
-                text_visibility.text =
-                    resources.getString(R.string.visibility, roundedVisibility.toString())
-                text_wind.text = resources.getString(
-                    R.string.wind_speed,
-                    roundedWindSpeed.toString(),
-                    mWeather.wind_direction_compass
-                )
-
-                convertWeatherStateToDrawableName(mWeather.weather_state_abbr)?.let { id ->
-                    image_icon.setImageResource(id)
-                }
-
-
-                // Wind Arrow
-                val windDirection = mWeather.wind_direction
-                val rotateAnimation = RotateAnimation(
-                    windDirection.toFloat(),
-                    0.0f,
-                    Animation.RELATIVE_TO_SELF,
-                    0.5f,
-                    Animation.RELATIVE_TO_SELF,
-                    0.5f
-                )
-                rotateAnimation.interpolator = DecelerateInterpolator()
-                rotateAnimation.repeatCount = 0
-                rotateAnimation.duration = animationDuration.toLong()
-                rotateAnimation.fillAfter = true
-                imageViewWindDirection.startAnimation(rotateAnimation)
-
+                updateTodayWeatherUI(it.consolidated_weather[0])
             }
         })
+
+    }
+
+    private fun updateTodayWeatherUI(weather: ConsolidatedWeather) {
+        val roundedTemperature = weather.the_temp.roundToInt()
+        val roundedAirPressure = weather.air_pressure.roundToInt()
+        val roundedVisibility = weather.visibility.roundToInt()
+        val roundedWindSpeed = weather.wind_speed.roundToInt()
+
+        text_temperature.text =
+            resources.getString(R.string.temperature, roundedTemperature.toString())
+        text_main_weather.text = weather.weather_state_name
+        val updatedTime = convertUTC_to_local_Timezone(weather.created)
+        text_last_update.text = resources.getString(R.string.last_updated, updatedTime)
+        text_pressure.text =
+            resources.getString(R.string.air_pressure, roundedAirPressure.toString())
+        text_humidity.text =
+            resources.getString(R.string.air_pressure, weather.humidity.toString())
+        text_visibility.text =
+            resources.getString(R.string.visibility, roundedVisibility.toString())
+        text_wind.text = resources.getString(
+            R.string.wind_speed,
+            roundedWindSpeed.toString(),
+            weather.wind_direction_compass
+        )
+
+        convertWeatherStateToDrawableName(weather.weather_state_abbr)?.let { id ->
+            image_icon.setImageResource(id)
+        }
+
+
+        // Wind Arrow
+        val windDirection = weather.wind_direction
+        val rotateAnimation = RotateAnimation(
+            windDirection.toFloat(),
+            0.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotateAnimation.interpolator = DecelerateInterpolator()
+        rotateAnimation.repeatCount = 0
+        rotateAnimation.duration = animationDuration.toLong()
+        rotateAnimation.fillAfter = true
+        imageViewWindDirection.startAnimation(rotateAnimation)
 
     }
 
@@ -217,13 +237,14 @@ class DetailsFragment : Fragment() {
         parentFragment?.findNavController()?.navigate(R.id.detailsFragment_to_searchCityFragment)
     }
 
-    fun readLocation() {
+    private fun readLocation() {
         Log.d("fdl", "readLocation")
 
         activity?.let {
             if (checkLocationPermission(it)) {
                 Log.d("fdl", "readLocation granted")
-                val locationManager = it.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+                val locationManager =
+                    it.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
                 manageProgressBar(true)
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, 5000, 10f,
@@ -234,24 +255,31 @@ class DetailsFragment : Fragment() {
                                 "fdl", "onLocationChanged Lat: " + location.latitude + " Lng: "
                                         + location.longitude
                             )
-                            viewModelNetwork.searchLocationByCoordinates(location.latitude, location.longitude)
+                            viewModelNetwork.searchLocationByCoordinates(
+                                location.latitude,
+                                location.longitude
+                            )
                             manageProgressBar(false)
 
                         }
 
 
+                        override fun onStatusChanged(
+                            provider: String,
+                            status: Int,
+                            extras: Bundle
+                        ) {
+                        }
 
-                        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
                         override fun onProviderEnabled(provider: String) {}
                         override fun onProviderDisabled(provider: String) {}
                     }
 
-                    )
+                )
             } else {
                 Log.w("fdl", "readLocation NOT granted...")
             }
         }
-
 
 
     }
@@ -265,29 +293,29 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    fun setupCalendar() {
+    private fun setupCalendar() {
 
         val calendar = Calendar.getInstance()
 
-// Initial date
+        // Initial date
         calendar.set(2018, Calendar.JUNE, 1)
         val initialDate = CalendarDate(calendar.time)
 
-// Minimum available date
-        calendar.set(2018, Calendar.MAY, 15)
+        // Minimum available date
+        calendar.set(2014, Calendar.JANUARY, 1)
         val minDate = CalendarDate(calendar.time)
 
-// Maximum available date
-        calendar.set(2020, Calendar.JULY, 15)
+        // get today date
+        val today = DateHelper.getTodayDate()
+
+        // Maximum available date
+        calendar.set(today["year"] ?: 1973, today["month"] ?: 9, today["day"] ?: 11)
         val maxDate = CalendarDate(calendar.time)
 
-// List of preselected dates that will be initially selected
-//        val preselectedDates: List<CalendarDate> = getPreselectedDates()
-
-// The first day of week
+        // The first day of week
         val firstDayOfWeek = java.util.Calendar.MONDAY
 
-// Set up calendar with all available parameters
+        // Set up calendar with all available parameters
         calendarView.setupCalendar(
             selectionMode = CalendarView.SelectionMode.SINGLE,
             initialDate = initialDate,
@@ -296,25 +324,23 @@ class DetailsFragment : Fragment() {
             firstDayOfWeek = firstDayOfWeek,
             showYearSelectionView = true
         )
-        //            selectedDates = preselectedDates,
 
         // Set date click callback
         calendarView.onDateClickListener = { date ->
-
-            // Do something ...
-            // for example get list of selected dates
             val selectedDates = calendarView.selectedDates
-            Log.d("fdl.calendar", "selectedDates:$selectedDates")
+            Log.d("fdl.calendar", "woied:$woeid selectedDates:$selectedDates")
             calendar_view.visibility = View.GONE
+            woeid?.let {
+                viewModel.getWeatherForDate(it, date.year, (date.month+1), date.dayOfMonth)
+            }
         }
 
-// Set date long click callback
+        // Set date long click callback
         calendarView.onDateLongClickListener = { date ->
             Log.d("fdl.calendar", "date:$date")
             // Do something ...
         }
     }
-
 
 
 }

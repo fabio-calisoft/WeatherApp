@@ -1,6 +1,7 @@
 package com.fabio.weatherapp.network
 
 
+import com.fabio.weatherapp.model.ConsolidatedWeather
 import com.fabio.weatherapp.model.Location
 import com.fabio.weatherapp.model.WeatherResponse
 import retrofit2.Call
@@ -21,4 +22,12 @@ interface WeatherNetwork {
 
     @GET("{woeid}")
     fun getWeather(@Path("woeid") woeid: Int): Call<WeatherResponse>
+
+    @GET("{woeid}/{year}/{month}/{day}")
+    fun getWeatherForDate(
+        @Path("woeid") woeid: Int,
+        @Path("year") year: Int,
+        @Path("month") month: Int,
+        @Path("day") day: Int
+    ): Call<List<ConsolidatedWeather>>
 }

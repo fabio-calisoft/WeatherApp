@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("fdl", "onCreate")
 
         setContentView(R.layout.activity_main)
-
     }
 
 

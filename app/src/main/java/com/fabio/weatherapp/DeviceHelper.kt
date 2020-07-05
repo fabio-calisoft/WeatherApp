@@ -4,17 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 
 object DeviceHelper {
@@ -62,54 +55,6 @@ object DeviceHelper {
             "t" -> R.drawable.ic_t
             else -> null
         }
-    }
-
-    @JvmStatic
-    fun convertUTC_to_local_Timezone(sourceDate: String): String {
-        val input = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
-        input.timeZone = TimeZone.getTimeZone("UTC")
-        val output = SimpleDateFormat("EEEE MMMM dd, HH:mm", Locale.US)
-        output.timeZone = TimeZone.getDefault()
-
-        var d: Date? = null
-        try {
-            d = input.parse(sourceDate) // "2018-02-02T06:54:57.744Z"
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-        val formatted = output.format(d)
-        Log.i("DATE", "" + formatted)
-        return formatted
-    }
-
-    /**
-     * takes a yyyy-mm-dd and returns a DayName dd mm yyyy
-     */
-    @JvmStatic
-    fun convertDate(sourceDate: String): String {
-        val input = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        input.timeZone = TimeZone.getTimeZone("UTC")
-        val output = SimpleDateFormat("EEEE", Locale.US)
-        output.timeZone = TimeZone.getDefault()
-
-        var d: Date? = null
-        try {
-            d = input.parse(sourceDate) // "2018-02-02T06:54:57.744Z"
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-        return output.format(d)
-    }
-
-    @JvmStatic
-    fun extractTime(sourceDate: String): String {
-        Log.d("fdl.extractTime", "sourceDate: $sourceDate")
-        if (TextUtils.isEmpty(sourceDate) || sourceDate.length<16)
-            return ""
-        val extracted = sourceDate.substring(11,16)
-        Log.d("fdl.extractTime", "extracted: $extracted")
-        return extracted
-
     }
 
     @JvmStatic
