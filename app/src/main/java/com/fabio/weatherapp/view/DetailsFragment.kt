@@ -1,6 +1,8 @@
 package com.fabio.weatherapp.view
 
 import android.R.attr.animationDuration
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -27,7 +29,6 @@ import com.fabio.weatherapp.databinding.FragmentDetailsBinding
 import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
-import kotlinx.android.synthetic.main.fragment_search_city.*
 import kotlin.math.roundToInt
 
 
@@ -99,8 +100,14 @@ class DetailsFragment : Fragment() {
 
         if (woeid == null || TextUtils.isEmpty(locationName)) {
             // let's use Location Manager
-            Log.d("fdl", "let's use Location Manager")
-            viewModelNetwork.searchLocationByCoordinates(37.42f, -122.08f)
+            Log.d("fdl", "let's use coordinates saved from Location Manager")
+            // save last location in SharedPreferences
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+            val latitude = sharedPref.getFloat("lat", 0f)
+            val longitude = sharedPref.getFloat("long", 0f)
+            Log.d("fdl", "latitude:$latitude longitude:$longitude")
+
+            viewModelNetwork.searchLocationByCoordinates(latitude, longitude)
         } else {
             woeid?.let {
                 viewModel.getWeather(it)
