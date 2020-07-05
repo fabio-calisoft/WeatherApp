@@ -6,5 +6,6 @@ DataBinding
 LiveData
 Navigation Component
 RecyclerView
+NestedScrollView
 ConstraintLayout
 Animation

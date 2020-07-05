@@ -6,5 +6,7 @@ data class WeatherResponse(
     val location_type: String,
     val woeid: Int,
     val lattLong: String,
-    val time: String
+    val time: String,
+    var sun_rise: String,
+    var sun_set: String
 )

@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Weather Demo Fabio</string>
     <string name="search_image_hint">Search a Location</string>
+    <string name="temperature">%1$s ℃</string>
+    <string name="last_updated">last updated: %1$s</string>
+    <string name="air_pressure">%1$s mb</string>
+    <string name="humidity">%1$s %</string>
+    <string name="visibility">%1$s mi</string>
+    <string name="wind_speed">%1$s knt (%2$s)</string>
 </resources>

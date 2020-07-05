@@ -41,10 +41,8 @@ class DetailsActivityRepository(var application: Application) {
                 res: Response<WeatherResponse>
             ) {
                 showProgress.value = false
-                Log.d("DeatilsRespository ", "Response${Gson().toJson(res.body())}")
+                Log.d("fdl.DetailsRepo ", "Response${Gson().toJson(res.body())}")
                 response.value = res.body()
-
-
             }
         })
 
