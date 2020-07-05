@@ -146,8 +146,14 @@ class DetailsFragment : Fragment() {
                 updateTodayWeatherUI(it)
 
                 // remove forecast
-                forecastRV.visibility = View.INVISIBLE
-                text_forecast.visibility = View.INVISIBLE
+                val today = DateHelper.getDashFormattedTodayDate()
+                if (it.applicable_date != today) {
+                    forecastRV.visibility = View.INVISIBLE
+                    text_forecast.visibility = View.INVISIBLE
+                } else {
+                    forecastRV.visibility = View.VISIBLE
+                    text_forecast.visibility = View.VISIBLE
+                }
             }
 
 
@@ -298,8 +304,8 @@ class DetailsFragment : Fragment() {
         val calendar = Calendar.getInstance()
 
         // Initial date
-        calendar.set(2018, Calendar.JUNE, 1)
-        val initialDate = CalendarDate(calendar.time)
+//        calendar.set(2018, Calendar.JUNE, 1)
+//        val initialDate = CalendarDate(calendar.time)
 
         // Minimum available date
         calendar.set(2014, Calendar.JANUARY, 1)
@@ -318,12 +324,12 @@ class DetailsFragment : Fragment() {
         // Set up calendar with all available parameters
         calendarView.setupCalendar(
             selectionMode = CalendarView.SelectionMode.SINGLE,
-            initialDate = initialDate,
             minDate = minDate,
             maxDate = maxDate,
             firstDayOfWeek = firstDayOfWeek,
             showYearSelectionView = true
         )
+        //            initialDate = initialDate,
 
         // Set date click callback
         calendarView.onDateClickListener = { date ->

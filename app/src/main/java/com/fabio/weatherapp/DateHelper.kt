@@ -2,6 +2,7 @@ package com.fabio.weatherapp
 
 import android.text.TextUtils
 import android.util.Log
+import java.text.DecimalFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,6 +75,19 @@ object DateHelper {
         return li
     }
 
+    /**
+     * returns today date String in a form of yyyy-mm-dd
+     */
+    @JvmStatic
+    fun getDashFormattedTodayDate(): String {
+        val mFormat = DecimalFormat("00")
+        val day = mFormat.format(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+        val month = mFormat.format(Calendar.getInstance().get(Calendar.MONTH) + 1)
+        val year = mFormat.format(Calendar.getInstance().get(Calendar.YEAR))
+        val res = "$year-$month-$day"
+        Log.d("fdl", "getDashFormattedTodayDate: $res")
+        return res
+    }
 
 }
 
