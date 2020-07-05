@@ -51,7 +51,7 @@ class SearchActivityRepository(var application: Application) {
     }
 
 
-    fun searchLocationByCoordinates(latt: Float, long: Float) {
+    fun searchLocationByCoordinates(latt: Double, long: Double) {
         showProgress.value = true
         //network Call
 

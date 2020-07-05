@@ -13,7 +13,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="1dp" >
+        tools:layout_editor_absoluteX="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -50,10 +50,10 @@
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     android:layout_marginStart="10sp"
+                    android:contentDescription="@string/app_name"
                     android:onClick="@{()->fragment.navigateToSearchLocation()}"
                     android:src="@drawable/edit"
-                    app:tint="@color/white"
-                    android:contentDescription="@string/app_name" />
+                    app:tint="@color/white" />
             </LinearLayout>
 
 
@@ -103,13 +103,13 @@
                 android:id="@+id/text_last_update"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/default_null"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="italic"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewCalendar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_main_weather"
                 app:layout_goneMarginBottom="48dp" />
@@ -180,11 +180,11 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
+                android:contentDescription="@string/app_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_last_update"
                 app:srcCompat="@drawable/sunrise"
-                app:tint="@color/white"
-                android:contentDescription="@string/app_name" />
+                app:tint="@color/white" />
 
             <ImageView
                 android:id="@+id/sunset_logo"
@@ -193,11 +193,11 @@
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
+                android:contentDescription="@string/app_name"
                 app:layout_constraintStart_toEndOf="@+id/text_label_sunrise"
                 app:layout_constraintTop_toBottomOf="@+id/text_last_update"
                 app:srcCompat="@drawable/sunset"
-                app:tint="@color/white"
-                android:contentDescription="@string/app_name" />
+                app:tint="@color/white" />
 
 
             <androidx.cardview.widget.CardView
@@ -252,11 +252,11 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginBottom="16dp"
+                                android:contentDescription="@string/app_name"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_detail_pressure"
-                                android:contentDescription="@string/app_name" />
+                                app:srcCompat="@drawable/ic_detail_pressure" />
 
                             <TextView
                                 android:id="@+id/text_pressure"
@@ -318,11 +318,11 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginBottom="16dp"
+                                android:contentDescription="@string/app_name"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_detail_hum"
-                                android:contentDescription="@string/app_name" />
+                                app:srcCompat="@drawable/ic_detail_hum" />
 
                             <TextView
                                 android:id="@+id/text_humidity"
@@ -401,12 +401,12 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginBottom="16dp"
+                                android:contentDescription="@string/app_name"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/wind_arrow"
-                                app:tint="@color/white"
-                                android:contentDescription="@string/app_name" />
+                                app:tint="@color/white" />
 
                             <TextView
                                 android:id="@+id/text_wind"
@@ -482,11 +482,11 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginBottom="16dp"
+                                android:contentDescription="@string/app_name"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_detail_visibility"
-                                android:contentDescription="@string/app_name" />
+                                app:srcCompat="@drawable/ic_detail_visibility" />
 
                             <TextView
                                 android:id="@+id/text_visibility"
@@ -534,6 +534,7 @@
                 android:text="@string/forecast"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider2" />
@@ -549,18 +550,41 @@
 
             <ProgressBar
                 android:id="@+id/mProgressBar"
-                android:visibility="invisible"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="200sp"
                 android:layout_height="200sp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="8dp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_icon" />
 
+            <ImageView
+                android:id="@+id/imageViewCalendar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_main_weather"
+                app:srcCompat="@drawable/calendar_red" />
+
+            <ru.cleverpumpkin.calendar.CalendarView
+                android:id="@+id/calendar_view"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="248dp"
+                android:layout_marginEnd="56dp"
+                android:background="@color/white"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+
 </layout>

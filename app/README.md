@@ -9,3 +9,5 @@ RecyclerView
 NestedScrollView
 ConstraintLayout
 Animation
+Location Service (gps coordinates)
+

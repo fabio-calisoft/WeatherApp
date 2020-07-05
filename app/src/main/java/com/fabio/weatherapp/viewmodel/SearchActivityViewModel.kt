@@ -22,7 +22,7 @@ class SearchActivityViewModel(application: Application) :AndroidViewModel(applic
        repository.searchLocationByName(location)
     }
 
-    fun searchLocationByCoordinates(latt: Float, long:Float){
+    fun searchLocationByCoordinates(latt: Double, long:Double){
         repository.searchLocationByCoordinates(latt, long)
     }
 

@@ -1,11 +1,15 @@
 package com.fabio.weatherapp
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
@@ -106,6 +110,42 @@ object DeviceHelper {
         Log.d("fdl.extractTime", "extracted: $extracted")
         return extracted
 
+    }
+
+    @JvmStatic
+    val LOCATION_REQUEST_CODE_ID = 123
+
+    @JvmStatic
+    fun checkLocationPermission(activity: Activity): Boolean {
+        return if (ContextCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_REQUEST_CODE_ID
+                )
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(
+                    activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_REQUEST_CODE_ID
+                )
+            }
+            false
+        } else {
+            true
+        }
     }
 
 
