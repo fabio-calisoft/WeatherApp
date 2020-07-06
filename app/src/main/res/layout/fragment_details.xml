@@ -109,7 +109,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/default_null"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
@@ -125,29 +125,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="44dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/sunrise"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:textStyle="italic"
                     app:layout_constraintStart_toEndOf="@+id/sunrise_logo"
-                    app:layout_constraintTop_toBottomOf="@+id/text_main_weather"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewCalendar"
                     app:layout_goneMarginBottom="48dp" />
 
                 <TextView
-                    android:id="@+id/text_label_sunrise3"
+                    android:id="@+id/text_label_sunset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="44dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/sunset"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:textStyle="italic"
                     app:layout_constraintStart_toEndOf="@+id/sunset_logo"
-                    app:layout_constraintTop_toBottomOf="@+id/text_main_weather"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewCalendar"
                     app:layout_goneMarginBottom="48dp" />
 
                 <TextView
@@ -155,11 +153,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/default_null"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:textStyle="italic"
                     app:layout_constraintStart_toEndOf="@+id/sunrise_logo"
                     app:layout_constraintTop_toBottomOf="@+id/text_label_sunrise"
                     app:layout_goneMarginBottom="48dp" />
@@ -173,9 +171,8 @@
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:textStyle="italic"
                     app:layout_constraintStart_toEndOf="@+id/sunset_logo"
-                    app:layout_constraintTop_toBottomOf="@+id/text_label_sunrise"
+                    app:layout_constraintTop_toBottomOf="@+id/text_label_sunset"
                     app:layout_goneMarginBottom="48dp" />
 
                 <ImageView
@@ -187,7 +184,7 @@
                     android:layout_weight="1"
                     android:contentDescription="@string/app_name"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_last_update"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewCalendar"
                     app:srcCompat="@drawable/sunrise"
                     app:tint="@color/white" />
 
@@ -200,7 +197,7 @@
                     android:layout_weight="1"
                     android:contentDescription="@string/app_name"
                     app:layout_constraintStart_toEndOf="@+id/text_label_sunrise"
-                    app:layout_constraintTop_toBottomOf="@+id/text_last_update"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewCalendar"
                     app:srcCompat="@drawable/sunset"
                     app:tint="@color/white" />
 
@@ -573,8 +570,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewCalendar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
