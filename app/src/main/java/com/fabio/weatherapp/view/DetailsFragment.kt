@@ -32,6 +32,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fabio.weatherapp.DateHelper
 import com.fabio.weatherapp.DateHelper.convertUTC_to_local_Timezone
 import com.fabio.weatherapp.DateHelper.extractTime
+import com.fabio.weatherapp.DeviceHelper
+import com.fabio.weatherapp.DeviceHelper.checkLocationPermission
 import com.fabio.weatherapp.DeviceHelper.convertWeatherStateToDrawableName
 import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.ForecastAdapter
@@ -303,7 +305,7 @@ class DetailsFragment : Fragment() {
         Log.d("fdl", "readLocation")
 
         activity?.let {
-            if (checkLocationPermission(it)) {
+            if (checkLocationPermission(it, this)) {
                 Log.d("fdl", "readLocation granted")
                 val locationManager =
                     it.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
@@ -414,66 +416,14 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private val LOCATION_REQUEST_CODE_ID = 123
-
-    fun checkLocationPermission(activity: Activity): Boolean {
-        return if (ContextCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_REQUEST_CODE_ID
-                )
-            } else {
-                // No explanation needed, we can request the permission.
-                requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_REQUEST_CODE_ID
-                )
-            }
-            false
-        } else {
-            true
-        }
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>, grantResults: IntArray
     ) {
         Log.d("fdl", "onRequestPermissionsResult")
-        when (requestCode) {
-            LOCATION_REQUEST_CODE_ID -> {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty()
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    // permission was granted, yay! Do the location-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-                        //Request location updates:
-                        Log.i("fdl", "granted")
-                        readLocation()
-                    }
-                } else {
-                    Log.e("fdl", "NO granted. Let's skip the Location Service")
-                }
-                return
-            }
+        if (DeviceHelper.processPermissionsResult(requestCode, grantResults, requireContext())) {
+            readLocation()
         }
     }
 

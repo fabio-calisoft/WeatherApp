@@ -4,10 +4,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 
 object DeviceHelper {
@@ -55,6 +57,74 @@ object DeviceHelper {
             "t" -> R.drawable.ic_t
             else -> null
         }
+    }
+
+
+    // Permission
+    @JvmStatic
+    private val LOCATION_REQUEST_CODE_ID = 123
+
+    @JvmStatic
+    fun checkLocationPermission(activity: Activity, fragment: Fragment): Boolean {
+        return if (ContextCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                fragment.requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_REQUEST_CODE_ID
+                )
+            } else {
+                // No explanation needed, we can request the permission.
+                fragment.requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_REQUEST_CODE_ID
+                )
+            }
+            false
+        } else {
+            true
+        }
+    }
+
+    @JvmStatic
+    fun processPermissionsResult(
+        requestCode: Int, grantResults: IntArray, requireContext: Context
+    ): Boolean {
+        Log.d("fdl", "onRequestPermissionsResult")
+        when (requestCode) {
+            LOCATION_REQUEST_CODE_ID -> {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // permission was granted, yay! Do the location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(
+                            requireContext,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        //Request location updates:
+                        Log.i("fdl", "granted")
+                        return true
+                    }
+                } else {
+                    Log.e("fdl", "NO granted. Let's skip the Location Service")
+                }
+                return false
+            }
+        }
+        return false
     }
 
 
