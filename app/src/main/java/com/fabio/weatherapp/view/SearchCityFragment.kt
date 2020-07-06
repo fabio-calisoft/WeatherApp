@@ -66,15 +66,12 @@ class SearchCityFragment : Fragment(), TextWatcher {
                     Log.d("fdl", "setLocation ${mLoc.title}")
                 }
                 adapter.setLocation(aList)
+                text_no_results.visibility = if (aList.isEmpty()) View.VISIBLE else View.INVISIBLE
             }
             if (lastSearchStringSubmitted == mSearchEdt.text.toString()) {
                 Log.d("xxx", "lastSearchStringSubmitted is as submitted")
                 lastSearchStringSubmitted = ""
             } else {
-                Log.d(
-                    "xxx",
-                    "lastSearchStringSubmitted is different. I have to re-search for:${mSearchEdt.text}"
-                )
                 lastSearchStringSubmitted = mSearchEdt.text.toString()
                 viewModel.searchLocationByName(mSearchEdt.text.toString())
             }
@@ -98,28 +95,23 @@ class SearchCityFragment : Fragment(), TextWatcher {
 
 
     override fun afterTextChanged(p0: Editable?) {
-        Log.d("fdl", "afterTextChanged")
     }
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        Log.d("fdl", "beforeTextChanged")
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         Log.d("fdl", "onTextChanged: $p0")
         if (lastSearchStringSubmitted.isEmpty()) {
-            Log.d("xxx", "lastSearchStringSubmitted is empty. Search for ${mSearchEdt.text}")
             lastSearchStringSubmitted = mSearchEdt.text.toString()
             viewModel.searchLocationByName(mSearchEdt.text.toString())
-        } else {
-            Log.d("xxx", "lastSearchStringSubmitted is not empty. Still doing some work")
         }
-
     }
 
     fun cleanSearchView() {
         Log.d("fdl", "clean")
         mSearchEdt.text.clear()
+        text_no_results.visibility = View.INVISIBLE
     }
 
 

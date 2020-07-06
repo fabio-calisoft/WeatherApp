@@ -63,8 +63,8 @@ class CalendarFragment : Fragment() {
         // get today date
         val today = DateHelper.getTodayDate()
 
-        // Maximum available date
-        calendar.set(today["year"] ?: 1973, today["month"] ?: 9, today["day"] ?: 11)
+        // Maximum available: today date
+        calendar.set(today["year"] ?: 2020, today["month"] ?: 12, today["day"] ?: 31)
         val maxDate = CalendarDate(calendar.time)
 
         // The first day of week
@@ -92,10 +92,7 @@ class CalendarFragment : Fragment() {
                 ?.navigate(R.id.action_calendarFragment_to_detailsFragment, bundle)
         }
 
-        // Set date long click callback
-//        calendarView.onDateLongClickListener = { date ->
-//            Log.d("fdl.calendar", "date:$date")
-//        }
+
     }
 
 
