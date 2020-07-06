@@ -120,10 +120,6 @@ class DetailsFragment : Fragment() {
         }
 
 
-
-
-
-
         viewModel.showProgress.observe(viewLifecycleOwner, Observer {
             manageProgressBar(it, "Loading Weather data")
         })
@@ -191,7 +187,10 @@ class DetailsFragment : Fragment() {
         setupCalendar()
         imageViewCalendar.setOnClickListener {
             Log.d("fdl", "show.calendar")
-            calendar_view.visibility = View.VISIBLE
+            calendar_lr.visibility = View.VISIBLE
+        }
+        close_calendar.setOnClickListener {
+            calendar_lr.visibility = View.INVISIBLE
         }
 
         viewModel.hourlyResponse.observe(viewLifecycleOwner, Observer {
@@ -402,7 +401,7 @@ class DetailsFragment : Fragment() {
         calendarView.onDateClickListener = { date ->
             val selectedDates = calendarView.selectedDates
             Log.d("fdl.calendar", "woied:$woeid selectedDates:$selectedDates")
-            calendar_view.visibility = View.GONE
+            calendar_lr.visibility = View.GONE
             woeid?.let {
                 viewModel.getWeatherForDate(it, date.year, (date.month + 1), date.dayOfMonth)
             }

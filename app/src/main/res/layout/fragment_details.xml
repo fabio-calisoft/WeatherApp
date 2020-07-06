@@ -563,9 +563,7 @@
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_icon"
-
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/image_icon" />
 
 
                 <ImageView
@@ -578,16 +576,35 @@
                     app:layout_constraintTop_toBottomOf="@+id/text_main_weather"
                     app:srcCompat="@drawable/calendar_red" />
 
-                <ru.cleverpumpkin.calendar.CalendarView
-                    android:id="@+id/calendar_view"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="248dp"
-                    android:layout_marginEnd="56dp"
+
+                <LinearLayout
+                    android:id="@+id/calendar_lr"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@color/white"
+                    android:gravity="end"
+                    android:orientation="vertical"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/close_calendar"
+                        style="@style/Style.Widgets.IconButton"
+                        android:visibility="visible"
+                        app:icon="@drawable/ic_common_close" />
+
+                    <ru.cleverpumpkin.calendar.CalendarView
+                        android:id="@+id/calendar_view"
+                        android:layout_gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
