@@ -357,10 +357,12 @@ class DetailsFragment : Fragment() {
 
     private fun manageProgressBar(isActive: Boolean, message: String) {
         if (isActive) {
-            mProgressBar.textViewMessage.text = message
-            mProgressBar.visibility = View.VISIBLE
+            mProgressBar?.let {
+                it.textViewMessage.text = message
+                mProgressBar?.visibility = View.VISIBLE
+            }
         } else {
-            mProgressBar.visibility = View.GONE
+            mProgressBar?.visibility = View.GONE
         }
     }
 

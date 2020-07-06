@@ -76,7 +76,11 @@ class DetailsActivityRepository(var application: Application) {
         call.enqueue(object : Callback<List<ConsolidatedWeather>> {
             override fun onFailure(call: Call<List<ConsolidatedWeather>>, t: Throwable) {
                 showProgress.value = false
-                Toast.makeText(application, "Error while getting data for getWeatherForDate", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    application,
+                    "Error while getting data for getWeatherForDate",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             override fun onResponse(
@@ -91,8 +95,6 @@ class DetailsActivityRepository(var application: Application) {
         })
 
     } // getWeather
-
-
 
 
 }

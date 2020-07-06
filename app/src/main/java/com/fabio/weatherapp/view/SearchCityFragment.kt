@@ -12,10 +12,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.fabio.weatherapp.DeviceHelper
 import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.SearchAdapter
 import com.fabio.weatherapp.databinding.FragmentSearchCityBinding
-import com.fabio.weatherapp.DeviceHelper
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_search_city.*
 
@@ -64,7 +64,10 @@ class SearchCityFragment : Fragment(), TextWatcher {
                 Log.d("xxx", "lastSearchStringSubmitted is as submitted")
                 lastSearchStringSubmitted = ""
             } else {
-                Log.d("xxx", "lastSearchStringSubmitted is different. I have to re-search for:${mSearchEdt.text}")
+                Log.d(
+                    "xxx",
+                    "lastSearchStringSubmitted is different. I have to re-search for:${mSearchEdt.text}"
+                )
                 lastSearchStringSubmitted = mSearchEdt.text.toString()
                 viewModel.searchLocationByName(mSearchEdt.text.toString())
             }

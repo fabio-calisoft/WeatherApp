@@ -61,7 +61,7 @@ class SearchActivityRepository(var application: Application) {
 
         val service = retrofit.create(WeatherNetwork::class.java)
 
-        val call = service.getLocationByCoordinates( "$latt,$long" )
+        val call = service.getLocationByCoordinates("$latt,$long")
         call.enqueue(object : Callback<List<Location>> {
             override fun onFailure(call: Call<List<Location>>, t: Throwable) {
                 showProgress.value = false
