@@ -1,6 +1,7 @@
 package com.fabio.weatherapp.view
 
 import android.R.attr.animationDuration
+import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -45,12 +46,15 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
-class DetailsFragment : Fragment(), LocationListener {
+class DetailsFragment : Fragment() {
 
     private lateinit var viewModel: DetailsActivityViewModel
     private lateinit var viewModelNetwork: SearchActivityViewModel
     private var woeid: Int? = null
     // DEBUG private var woeid: Int? = 44418
+
+    private val TAG: String = DetailsFragment::class.java.name
+
 
     private lateinit var binding: FragmentDetailsBinding
 
@@ -285,52 +289,75 @@ class DetailsFragment : Fragment(), LocationListener {
 
 
     // =====  ++++ GPS Location Manager
-    override fun onLocationChanged(location: Location) {
-        Log.d(
-            "fdl", "onLocationChanged Lat: " + location.latitude + " Lng: "
-                    + location.longitude
-        )
-        activity?.let {
-            val locationManager =
-                it.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
-            locationManager.removeUpdates(this)
-        }
 
-        viewModelNetwork.searchLocationByCoordinates(
-            location.latitude,
-            location.longitude
-        )
-        manageProgressBar(false, "Reading gps location")
-    }
+    fun readLocation() {
+        Log.d(TAG, "readLocation")
 
-
-    override fun onStatusChanged(
-        provider: String,
-        status: Int,
-        extras: Bundle
-    ) {
-    }
-
-    override fun onProviderEnabled(provider: String) {}
-    override fun onProviderDisabled(provider: String) {}
-
-    private fun readLocation() {
-        Log.d("fdl", "readLocation")
+        val locationManager =
+            activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+        val c = Criteria()
+        val provider = locationManager.getBestProvider(c, false)
 
         activity?.let {
             if (checkLocationPermission(it, this)) {
-                Log.d("fdl", "readLocation granted")
+                Log.d(TAG, "readLocation granted")
                 val locationManager =
                     it.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
                 manageProgressBar(true, "Reading gps location")
-                locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, 5000, 10f, this
-                )
+
+                val location = locationManager.getLastKnownLocation(provider!!)
+                if (location != null) {
+                    updateLocation(location.latitude, location.longitude)
+                    manageProgressBar(false, "Reading gps location")
+                } else {
+                    Log.w(
+                        TAG,
+                        "No provider :( Let's try with GPS. This is going to take some time !!"
+                    )
+                    // No provider :( Let's try with GPS. This is going to take some time !!
+                    locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER, 5 * 60 * 1000, 100f,
+
+                        object : LocationListener {
+                            override fun onLocationChanged(location: Location) {
+                                Log.d(
+                                    TAG, "onLocationChanged Lat: " + location.latitude + " Lng: "
+                                            + location.longitude
+                                )
+                                updateLocation(location.latitude, location.longitude)
+                                manageProgressBar(false, "Reading gps location")
+                            }
+
+
+                            override fun onStatusChanged(
+                                provider: String,
+                                status: Int,
+                                extras: Bundle
+                            ) {
+                            }
+
+                            override fun onProviderEnabled(provider: String) {}
+                            override fun onProviderDisabled(provider: String) {}
+                        }
+
+                    )
+                }
+
             } else {
-                Log.w("fdl", "readLocation NOT granted...")
+                Log.w(TAG, "readLocation NOT granted...")
             }
         }
 
+
+    }
+
+
+    fun updateLocation(latitude: Double, longitude: Double) {
+        viewModelNetwork.searchLocationByCoordinates(
+            latitude,
+            longitude
+        )
+        manageProgressBar(false, "Reading gps location")
     }
     // =====  ---- GPS Location Manager
 
