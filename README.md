@@ -1,6 +1,6 @@
 # WeatherApp
-Application
-when the app starts, it looks for the local gps position.
+
+When the app starts, after asking for permission, it looks for the local gps position.
 If available, it queries the backend to retrieve the closest weather location
 If found, it queries the backend for the current and forecast weather
 
