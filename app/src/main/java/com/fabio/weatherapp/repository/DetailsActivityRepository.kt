@@ -89,8 +89,12 @@ class DetailsActivityRepository(var application: Application) {
             ) {
                 showProgress.value = false
                 Log.d("fdl.getWeatherForDate ", "Response:${Gson().toJson(res.body())}")
-//                response.value = res.body()
-                hourlyResponse.value = res.body()?.get(0)
+                res.body()?.let {
+                    if (it.isNotEmpty()) {
+                        hourlyResponse.value = res.body()?.get(0)
+                    }
+                }
+
             }
         })
 

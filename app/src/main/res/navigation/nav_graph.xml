@@ -21,5 +21,16 @@
         <action
             android:id="@+id/detailsFragment_to_searchCityFragment"
             app:destination="@id/searchCityFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.fabio.weatherapp.view.CalendarFragment"
+        android:label="CalendarFragment" >
+        <action
+            android:id="@+id/action_calendarFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
 </navigation>

@@ -1,6 +1,5 @@
 package com.fabio.weatherapp.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,24 +38,13 @@ class SearchAdapter(private val parentFragment: Fragment) :
         val currLocation = list[position]
         holder.itemView.tv_locationName.text = currLocation.title
         holder.itemView.tv_latlong.text = currLocation.latt_long
-
-        val latLong = currLocation.latt_long.split(",")
-        if (latLong.size == 2) {
-            val lat = latLong[0]
-            val long = latLong[1]
-
-            holder.itemView.root_view.setOnClickListener {
-                val bundle = bundleOf(
-                    "WOEID" to currLocation.woeid,
-                    "LATITUDE" to lat,
-                    "LONGITUDE" to long
-                )
-                parentFragment.findNavController()
-                    .navigate(R.id.action_searchCityFragment_to_detailsFragment, bundle)
-            }
-
-        } else {
-            Log.e("fdl", "cannot find lat long: ${latLong.size}")
+        holder.itemView.root_view.setOnClickListener {
+            val bundle = bundleOf(
+                "WOEID" to currLocation.woeid,
+                "LOCATION_NAME" to currLocation.title
+            )
+            parentFragment.findNavController()
+                .navigate(R.id.action_searchCityFragment_to_detailsFragment, bundle)
         }
     }
 }
