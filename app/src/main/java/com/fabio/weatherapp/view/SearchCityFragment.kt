@@ -1,9 +1,5 @@
 package com.fabio.weatherapp.view
 
-import android.Manifest
-import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -16,13 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.fabio.weatherapp.DeviceHelper
+import com.fabio.weatherapp.DeviceHelper.checkLocationPermission
+import com.fabio.weatherapp.DeviceHelper.processPermissionsResult
 import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.SearchAdapter
 import com.fabio.weatherapp.databinding.FragmentSearchCityBinding
@@ -70,15 +66,12 @@ class SearchCityFragment : Fragment(), TextWatcher {
                     Log.d("fdl", "setLocation ${mLoc.title}")
                 }
                 adapter.setLocation(aList)
+                text_no_results.visibility = if (aList.isEmpty()) View.VISIBLE else View.INVISIBLE
             }
             if (lastSearchStringSubmitted == mSearchEdt.text.toString()) {
                 Log.d("xxx", "lastSearchStringSubmitted is as submitted")
                 lastSearchStringSubmitted = ""
             } else {
-                Log.d(
-                    "xxx",
-                    "lastSearchStringSubmitted is different. I have to re-search for:${mSearchEdt.text}"
-                )
                 lastSearchStringSubmitted = mSearchEdt.text.toString()
                 viewModel.searchLocationByName(mSearchEdt.text.toString())
             }
@@ -102,28 +95,23 @@ class SearchCityFragment : Fragment(), TextWatcher {
 
 
     override fun afterTextChanged(p0: Editable?) {
-        Log.d("fdl", "afterTextChanged")
     }
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        Log.d("fdl", "beforeTextChanged")
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         Log.d("fdl", "onTextChanged: $p0")
         if (lastSearchStringSubmitted.isEmpty()) {
-            Log.d("xxx", "lastSearchStringSubmitted is empty. Search for ${mSearchEdt.text}")
             lastSearchStringSubmitted = mSearchEdt.text.toString()
             viewModel.searchLocationByName(mSearchEdt.text.toString())
-        } else {
-            Log.d("xxx", "lastSearchStringSubmitted is not empty. Still doing some work")
         }
-
     }
 
     fun cleanSearchView() {
         Log.d("fdl", "clean")
         mSearchEdt.text.clear()
+        text_no_results.visibility = View.INVISIBLE
     }
 
 
@@ -131,7 +119,7 @@ class SearchCityFragment : Fragment(), TextWatcher {
         Log.d("fdl", "readLocation")
 
         activity?.let {
-            if (checkLocationPermission(it)) {
+            if (checkLocationPermission(it, this)) {
                 Log.d("fdl", "readLocation granted")
                 val locationManager =
                     it.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
@@ -150,14 +138,6 @@ class SearchCityFragment : Fragment(), TextWatcher {
                                 location.longitude
                             )
                             manageProgressBar(false, "Reading gps location")
-                            // save coordinate into SP
-                            val sharedPref =
-                                activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-                            with(sharedPref.edit()) {
-                                putFloat("lat", location.latitude.toFloat())
-                                putFloat("long", location.longitude.toFloat())
-                                commit()
-                            }
                         }
 
 
@@ -178,7 +158,16 @@ class SearchCityFragment : Fragment(), TextWatcher {
             }
         }
 
+    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        Log.d("fdl", "onRequestPermissionsResult")
+        if (processPermissionsResult(requestCode, grantResults, requireContext())) {
+            readLocation()
+        }
     }
 
 
@@ -190,70 +179,6 @@ class SearchCityFragment : Fragment(), TextWatcher {
             }
         } else {
             pgSearch?.visibility = View.INVISIBLE
-        }
-    }
-
-
-    private val LOCATION_REQUEST_CODE_ID = 123
-
-    fun checkLocationPermission(activity: Activity): Boolean {
-        return if (ContextCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_REQUEST_CODE_ID
-                )
-            } else {
-                // No explanation needed, we can request the permission.
-                requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_REQUEST_CODE_ID
-                )
-            }
-            false
-        } else {
-            true
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
-    ) {
-        Log.d("fdl", "onRequestPermissionsResult")
-        when (requestCode) {
-            LOCATION_REQUEST_CODE_ID -> {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty()
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    // permission was granted, yay! Do the location-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-                        //Request location updates:
-                        Log.i("fdl", "granted")
-                        readLocation()
-                    }
-                } else {
-                    Log.e("fdl", "NO granted. Let's skip the Location Service")
-                }
-                return
-            }
         }
     }
 
