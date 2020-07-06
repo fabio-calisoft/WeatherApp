@@ -6,6 +6,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,8 +37,10 @@ import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.loading_progress.view.*
+import kotlinx.coroutines.*
 import ru.cleverpumpkin.calendar.CalendarDate
 import ru.cleverpumpkin.calendar.CalendarView
+import java.lang.Runnable
 import kotlin.math.roundToInt
 
 
@@ -79,6 +82,25 @@ class DetailsFragment : Fragment() {
 
 
 
+        // SwipeRefreshLayout
+        swipe_container.setOnRefreshListener {
+            Log.d("fdl", "refresh initiated")
+            // dispatches execution into Android main thread
+            val uiScope = CoroutineScope(Dispatchers.Main)
+            uiScope.launch {
+                woeid?.let {
+                    viewModel.getWeather(it)
+                }
+                swipe_container.isRefreshing = false
+                Log.d("fdl", "refresh stop")
+            }
+        }
+
+
+
+
+
+
         viewModel.showProgress.observe(viewLifecycleOwner, Observer {
             manageProgressBar(it, "Loading Weather data")
         })
@@ -95,7 +117,7 @@ class DetailsFragment : Fragment() {
                 woeid = aList[0].woeid
                 tv_locationName.text = aList[0].title
                 woeid?.let {
-                    viewModel.getWeather(aList[0].woeid)
+                    viewModel.getWeather(it)
                 }
             }
 
@@ -339,7 +361,7 @@ class DetailsFragment : Fragment() {
             Log.d("fdl.calendar", "woied:$woeid selectedDates:$selectedDates")
             calendar_view.visibility = View.GONE
             woeid?.let {
-                viewModel.getWeatherForDate(it, date.year, (date.month+1), date.dayOfMonth)
+                viewModel.getWeatherForDate(it, date.year, (date.month + 1), date.dayOfMonth)
             }
         }
 
