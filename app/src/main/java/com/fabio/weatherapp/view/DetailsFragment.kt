@@ -1,7 +1,6 @@
 package com.fabio.weatherapp.view
 
 import android.R.attr.animationDuration
-import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -29,6 +28,9 @@ import com.fabio.weatherapp.DateHelper.extractTime
 import com.fabio.weatherapp.DeviceHelper
 import com.fabio.weatherapp.DeviceHelper.checkLocationPermission
 import com.fabio.weatherapp.DeviceHelper.convertWeatherStateToDrawableName
+import com.fabio.weatherapp.DeviceHelper.loadDataLocationName
+import com.fabio.weatherapp.DeviceHelper.loadDataWoeid
+import com.fabio.weatherapp.DeviceHelper.saveData
 import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.ForecastAdapter
 import com.fabio.weatherapp.databinding.FragmentDetailsBinding
@@ -48,20 +50,19 @@ class DetailsFragment : Fragment(), LocationListener {
     private lateinit var viewModel: DetailsActivityViewModel
     private lateinit var viewModelNetwork: SearchActivityViewModel
     private var woeid: Int? = null
-//    private var woeid: Int? = 44418
+    // DEBUG private var woeid: Int? = 44418
 
     private lateinit var binding: FragmentDetailsBinding
 
-    private var calendar_year: Int? = null
-    private var calendar_month: Int? = null
-    private var calendar_day: Int? = null
+    private var calendarYear: Int? = null
+    private var calendarMonth: Int? = null
+    private var calendarDay: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("fdl.DetailsFragment", "onCreateView")
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false)
         binding.fragment = this
         return binding.root
@@ -83,26 +84,15 @@ class DetailsFragment : Fragment(), LocationListener {
             manageProgressBar(it, "Loading Location data")
         })
 
+        /*
+         * Observer for List of Locations when the gps coordinates are used
+         */
         viewModelNetwork.locationList.observe(viewLifecycleOwner, Observer {
             it?.let { aList ->
-                aList.forEach { mLoc ->
-                    Log.d("fdl", "Location found: ${mLoc.title}")
-                }
                 woeid = aList[0].woeid
                 tv_locationName.text = aList[0].title
                 woeid?.let { mWoeid ->
-                    // save woeid into SP
-                    val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-                    sharedPref?.let { sp ->
-                        with(sp.edit()) {
-                            Log.d("fdl", "saving WOEID in SP:$mWoeid")
-                            putInt("WOEID", mWoeid)
-                            putString("LOCATION_NAME", aList[0].title)
-                            commit()
-                        }
-
-                    }
-                    Log.d("fdl.DetailsFragment", "onCreateView woeid:$woeid")
+                    saveData(activity, mWoeid, aList[0].title)
 
                     // get the weather for this Location
                     viewModel.getWeather(mWoeid)
@@ -113,7 +103,7 @@ class DetailsFragment : Fragment(), LocationListener {
 
         // SwipeRefreshLayout
         swipe_container.setOnRefreshListener {
-            Log.d("fdl", "refresh initiated")
+
             // dispatches execution into Android main thread
             val uiScope = CoroutineScope(Dispatchers.Main)
             uiScope.launch {
@@ -121,81 +111,54 @@ class DetailsFragment : Fragment(), LocationListener {
                     viewModel.getWeather(it)
                 }
                 swipe_container.isRefreshing = false
-                Log.d("fdl", "refresh stop")
             }
         }
 
 
-        //TODO DEBUG
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         arguments?.let {
             if (it.containsKey("WOEID")) {
                 woeid = arguments?.getInt("WOEID")
                 tv_locationName.text = arguments?.getString("LOCATION_NAME")
-                sharedPref?.let { sp ->
-                    with(sp.edit()) {
-                        Log.d("fdl", "saving WOEID in SP:$woeid")
-                        putInt("WOEID", woeid!!)
-                        putString("LOCATION_NAME", arguments?.getString("LOCATION_NAME"))
-                        commit()
-                    }
-
-                }
-
-
+                saveData(activity, woeid, arguments?.getString("LOCATION_NAME"))
             }
 
             if (it.containsKey("YEAR") && it.containsKey("MONTH") && it.containsKey("DAY")) {
-                calendar_year = arguments?.getInt("YEAR")
-                calendar_month = arguments?.getInt("MONTH")
-                calendar_day = arguments?.getInt("DAY")
+                calendarYear = arguments?.getInt("YEAR")
+                calendarMonth = arguments?.getInt("MONTH")
+                calendarDay = arguments?.getInt("DAY")
             }
 
         }
-        Log.d("fdl", "calendar_year:$calendar_year")
-        Log.d("fdl", "calendar_month:$calendar_month")
-        Log.d("fdl", "calendar_day:$calendar_day")
 
         // If I don't have a location (woeid) yet, let's check in SharedPref.
         // If empty, let's query Location Manager
         if (woeid == null) {
             // do I have the location in Shared Preferences ?
-            if (sharedPref != null && sharedPref.contains("WOEID")) {
-                // ok, I have woeid from SP
-                woeid = sharedPref.getInt("WOEID", -1)
-                if (woeid == -1) {
-                    Log.e("fdl", "cannot read from SP")
-                    woeid = null
-                } else {
-                    tv_locationName.text = sharedPref.getString("LOCATION_NAME", " --- ")
-                }
-                Log.d("fdl", "SharedPreferences woeid:$woeid")
+            woeid = loadDataWoeid(activity)
+            if (woeid != null) { // ok, I have woeid from SP
+                tv_locationName.text = loadDataLocationName(activity)
             } else {
                 // I don't have woeid. let's use Location Manager
-                Log.d("fdl", "let's use coordinates from Location Manager")
                 readLocation()
             }
 
         }
 
         woeid?.let {
-            Log.d("fdl", "x calendar_year;$calendar_year")
-            Log.d("fdl", "x calendar_month;$calendar_month")
-            Log.d("fdl", "x calendar_day;$calendar_day")
             // Check if it's coming from the calendar POST
-            if (calendar_year != null && calendar_month != null && calendar_day != null &&
-                calendar_year!! > 0 && calendar_month!! > 0 && calendar_day!! > 0
+            if (calendarYear != null && calendarMonth != null && calendarDay != null &&
+                calendarYear!! > 0 && calendarMonth!! > 0 && calendarDay!! > 0
             ) {
                 // Get Weather some date in the past
                 viewModel.getWeatherForDate(
                     it,
-                    calendar_year!!,
-                    calendar_month!!,
-                    calendar_day!!
+                    calendarYear!!,
+                    calendarMonth!!,
+                    calendarDay!!
                 )
-                calendar_year = null
-                calendar_month = null
-                calendar_day = null
+                calendarYear = null
+                calendarMonth = null
+                calendarDay = null
             } else {
                 // Get Weather today
                 viewModel.getWeather(it)
@@ -271,6 +234,9 @@ class DetailsFragment : Fragment(), LocationListener {
 
     }
 
+    /**
+     * Updated the UI part of today's weather (no forecast)
+     */
     private fun updateTodayWeatherUI(weather: ConsolidatedWeather) {
         val roundedTemperature = weather.the_temp.roundToInt()
         val roundedAirPressure = weather.air_pressure.roundToInt()
@@ -317,12 +283,8 @@ class DetailsFragment : Fragment(), LocationListener {
 
     }
 
-    fun navigateToSearchLocation() {
-        parentFragment?.findNavController()?.navigate(R.id.detailsFragment_to_searchCityFragment)
-    }
 
-
-    // ===== GPS Location Manager
+    // =====  ++++ GPS Location Manager
     override fun onLocationChanged(location: Location) {
         Log.d(
             "fdl", "onLocationChanged Lat: " + location.latitude + " Lng: "
@@ -369,15 +331,26 @@ class DetailsFragment : Fragment(), LocationListener {
             }
         }
 
-
     }
+    // =====  ---- GPS Location Manager
 
+
+    /**
+     * Nav-graph
+     */
     fun openCalendar() {
         parentFragment?.findNavController()
             ?.navigate(R.id.action_detailsFragment_to_calendarFragment)
     }
 
+    fun navigateToSearchLocation() {
+        parentFragment?.findNavController()?.navigate(R.id.detailsFragment_to_searchCityFragment)
+    }
 
+
+    /**
+     * Show/Hide the progressbar with message
+     */
     private fun manageProgressBar(isActive: Boolean, message: String) {
         if (isActive) {
             mProgressBar?.let {
@@ -390,6 +363,10 @@ class DetailsFragment : Fragment(), LocationListener {
     }
 
 
+    /**
+     * Location Request Callback.
+     * To be handled in the Fragment
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>, grantResults: IntArray

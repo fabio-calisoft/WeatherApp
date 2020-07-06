@@ -1,6 +1,5 @@
 package com.fabio.weatherapp.view
 
-import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -147,14 +146,6 @@ class SearchCityFragment : Fragment(), TextWatcher {
                                 location.longitude
                             )
                             manageProgressBar(false, "Reading gps location")
-                            // save coordinate into SP
-                            val sharedPref =
-                                activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-                            with(sharedPref.edit()) {
-                                putFloat("lat", location.latitude.toFloat())
-                                putFloat("long", location.longitude.toFloat())
-                                commit()
-                            }
                         }
 
 
@@ -182,8 +173,8 @@ class SearchCityFragment : Fragment(), TextWatcher {
         permissions: Array<String>, grantResults: IntArray
     ) {
         Log.d("fdl", "onRequestPermissionsResult")
-        if (processPermissionsResult(requestCode, grantResults, requireContext()) ) {
-                readLocation()
+        if (processPermissionsResult(requestCode, grantResults, requireContext())) {
+            readLocation()
         }
     }
 
@@ -198,8 +189,6 @@ class SearchCityFragment : Fragment(), TextWatcher {
             pgSearch?.visibility = View.INVISIBLE
         }
     }
-
-
 
 
 }

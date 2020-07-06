@@ -10,6 +10,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.fragment_search_city.*
+import kotlinx.android.synthetic.main.loading_progress.view.*
 
 
 object DeviceHelper {
@@ -126,6 +129,50 @@ object DeviceHelper {
         }
         return false
     }
+
+
+    // Shared Preferences +++++
+    /**
+     * save woeid and location_name into Shared Preferences
+     */
+    @JvmStatic
+    fun saveData(pActivity: Activity?, woeid: Int?, locationTitle: String?) {
+        if (pActivity==null || woeid == null)
+            return
+        val sharedPref = pActivity.getPreferences(Context.MODE_PRIVATE)
+        sharedPref?.let { sp ->
+            with(sp.edit()) {
+                putInt("WOEID", woeid)
+                putString("LOCATION_NAME", locationTitle)
+                commit()
+            }
+        }
+    }
+
+
+    @JvmStatic
+    fun loadDataWoeid(pActivity: Activity?): Int? {
+        if (pActivity == null)
+            return null
+        val sharedPref = pActivity.getPreferences(Context.MODE_PRIVATE)
+
+        val woeid = sharedPref.getInt("WOEID", -1)
+        return if (woeid == -1) {
+            null
+        } else {
+            woeid
+        }
+    }
+
+    @JvmStatic
+    fun loadDataLocationName(pActivity: Activity?): String? {
+        if (pActivity == null)
+            return null
+        val sharedPref = pActivity.getPreferences(Context.MODE_PRIVATE)
+        return sharedPref.getString("LOCATION_NAME", " --- ")
+    }
+    // Shared Preferences -----
+
 
 
 }
