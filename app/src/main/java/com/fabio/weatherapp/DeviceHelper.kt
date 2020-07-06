@@ -57,42 +57,6 @@ object DeviceHelper {
         }
     }
 
-    @JvmStatic
-    val LOCATION_REQUEST_CODE_ID = 123
-
-    @JvmStatic
-    fun checkLocationPermission(activity: Activity): Boolean {
-        return if (ContextCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_REQUEST_CODE_ID
-                )
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(
-                    activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_REQUEST_CODE_ID
-                )
-            }
-            false
-        } else {
-            true
-        }
-    }
-
 
 }
 

@@ -63,12 +63,6 @@ class SearchCityFragment : Fragment(), TextWatcher {
         adapter = SearchAdapter(this)
         rvSearch.adapter = adapter
 
-
-//        mSearchEdt.setOnClickListener {
-//            mSearchEdt.text?.clear()
-//            mSearchEdt.requestFocus()
-//            activity?.let { it1 -> DeviceHelper.showKeyboard(mSearchEdt, it1) }
-//        }
         mSearchEdt.addTextChangedListener(this)
 
         mSearchEdt.setOnEditorActionListener { _, actionId, _ ->

@@ -1,12 +1,15 @@
 package com.fabio.weatherapp.view
 
+import android.Manifest
 import android.R.attr.animationDuration
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +19,8 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -27,7 +32,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fabio.weatherapp.DateHelper
 import com.fabio.weatherapp.DateHelper.convertUTC_to_local_Timezone
 import com.fabio.weatherapp.DateHelper.extractTime
-import com.fabio.weatherapp.DeviceHelper.checkLocationPermission
 import com.fabio.weatherapp.DeviceHelper.convertWeatherStateToDrawableName
 import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.ForecastAdapter
@@ -37,10 +41,11 @@ import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.loading_progress.view.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.cleverpumpkin.calendar.CalendarDate
 import ru.cleverpumpkin.calendar.CalendarView
-import java.lang.Runnable
 import kotlin.math.roundToInt
 
 
@@ -49,23 +54,42 @@ class DetailsFragment : Fragment() {
     private lateinit var viewModel: DetailsActivityViewModel
     private lateinit var viewModelNetwork: SearchActivityViewModel
     private var woeid: Int? = null
-    private var locationName: String? = null
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var calendarView: CalendarView
+
+    //    private var locationName: String? = null
+    private var latitude: String? = null
+    private var longitude: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("fdl.DetailsFragment", "onCreateView")
+
         //TODO DEBUG
         woeid = arguments?.getInt("WOEID")
 //        woeid = 44418
-        locationName = arguments?.getString("LOCATION_NAME")
+        latitude = arguments?.getString("LATITUDE")
+        longitude = arguments?.getString("LONGITUDE")
+
+        // save coordinate into SP
+        if (!TextUtils.isEmpty(latitude) && !TextUtils.isEmpty(latitude)) {
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            sharedPref?.let {
+                with(it.edit()) {
+                    putFloat("lat", latitude!!.toFloat())
+                    putFloat("long", longitude!!.toFloat())
+                    commit()
+                }
+
+            }
+        }
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false)
 
-        Log.d("fdl.DetailsFragment", "woeid:$woeid locationName:$locationName")
+        Log.d("fdl.DetailsFragment", "onCreateView woeid:$woeid lat:$latitude long:$longitude")
         binding.fragment = this
         return binding.root
 
@@ -74,12 +98,11 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("fdl.DetailsFragment", "onViewCreated")
+
         calendarView = view.findViewById(R.id.calendar_view)
         viewModel = ViewModelProvider(this).get(DetailsActivityViewModel::class.java)
         viewModelNetwork = ViewModelProvider(this).get(SearchActivityViewModel::class.java)
-
-        tv_locationName.text = locationName
-
 
 
         // SwipeRefreshLayout
@@ -125,15 +148,24 @@ class DetailsFragment : Fragment() {
 
 
         // If I don't have a location (woeid) yet, let's query Location Manager
-        if (woeid == null || TextUtils.isEmpty(locationName)) {
-            // let's use Location Manager
-            Log.d("fdl", "let's use coordinates saved from Location Manager")
-            readLocation()
-//            // save last location in SharedPreferences
-//            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-//            val latitude = sharedPref.getFloat("lat", 0f)
-//            val longitude = sharedPref.getFloat("long", 0f)
-//            Log.d("fdl", "latitude:$latitude longitude:$longitude")
+        if (woeid == null || TextUtils.isEmpty(longitude) || TextUtils.isEmpty(latitude)) {
+            // do I have the location in Shared Preferences ?
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            if (sharedPref != null && sharedPref.contains("lat") && sharedPref.contains("long")) {
+                // ok, I have the data from SP
+                val latitude = sharedPref.getFloat("lat", 0f)
+                val longitude = sharedPref.getFloat("long", 0f)
+                Log.d("fdl", "SharedPreferences latitude:$latitude longitude:$longitude")
+                viewModelNetwork.searchLocationByCoordinates(
+                    latitude.toDouble(),
+                    longitude.toDouble()
+                )
+            } else {
+                // SP doesn't have the location.
+                // let's use Location Manager
+                Log.d("fdl", "let's use coordinates saved from Location Manager")
+                readLocation()
+            }
 
         } else {
             woeid?.let {
@@ -187,6 +219,8 @@ class DetailsFragment : Fragment() {
         viewModel.response.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 Log.d("fdl", "consolidated_weather: ${it.consolidated_weather[0]}")
+
+                tv_locationName.text = it.title
 
                 // Forecast +++ fdl [0] is today
                 forecastRV.visibility = View.VISIBLE
@@ -289,7 +323,14 @@ class DetailsFragment : Fragment() {
                                 location.longitude
                             )
                             manageProgressBar(false, "Reading gps location")
-
+                            // save coordinate into SP
+                            val sharedPref =
+                                activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+                            with(sharedPref.edit()) {
+                                putFloat("lat", location.latitude.toFloat())
+                                putFloat("long", location.longitude.toFloat())
+                                commit()
+                            }
                         }
 
 
@@ -369,6 +410,69 @@ class DetailsFragment : Fragment() {
         calendarView.onDateLongClickListener = { date ->
             Log.d("fdl.calendar", "date:$date")
             // Do something ...
+        }
+    }
+
+    val LOCATION_REQUEST_CODE_ID = 123
+
+    fun checkLocationPermission(activity: Activity): Boolean {
+        return if (ContextCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_REQUEST_CODE_ID
+                )
+            } else {
+                // No explanation needed, we can request the permission.
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_REQUEST_CODE_ID
+                )
+            }
+            false
+        } else {
+            true
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        Log.d("fdl", "onRequestPermissionsResult")
+        when (requestCode) {
+            LOCATION_REQUEST_CODE_ID -> {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // permission was granted, yay! Do the location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        //Request location updates:
+                        Log.i("fdl", "granted")
+                        readLocation()
+                    }
+                } else {
+                    Log.e("fdl", "NO granted. Let's skip the Location Service")
+                }
+                return
+            }
         }
     }
 

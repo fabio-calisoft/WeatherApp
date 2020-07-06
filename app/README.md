@@ -17,6 +17,7 @@ MVVM design
 Retrofit + OkHttp3
 DataBinding
 LiveData
+Coroutines (refresh weather on swipe down)
 Navigation Component
 RecyclerView
 NestedScrollView
