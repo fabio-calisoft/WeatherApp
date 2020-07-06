@@ -22,6 +22,7 @@ Navigation Component
 RecyclerView
 NestedScrollView
 ConstraintLayout
+Cardview
 Animation
 Location Service (gps coordinates)
 Calendar:
