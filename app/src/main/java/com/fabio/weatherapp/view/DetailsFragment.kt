@@ -414,7 +414,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    val LOCATION_REQUEST_CODE_ID = 123
+    private val LOCATION_REQUEST_CODE_ID = 123
 
     fun checkLocationPermission(activity: Activity): Boolean {
         return if (ContextCompat.checkSelfPermission(

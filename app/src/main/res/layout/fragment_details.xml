@@ -552,8 +552,6 @@
                 <include
                     android:id="@+id/mProgressBar"
                     style="?android:attr/progressBarStyle"
-
-
                     layout="@layout/loading_progress"
                     android:layout_width="200sp"
                     android:layout_height="200sp"

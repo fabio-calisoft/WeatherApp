@@ -36,7 +36,7 @@
                 android:paddingTop="@dimen/margin_tiny"
                 android:paddingEnd="@dimen/margin_tiny"
                 android:paddingBottom="@dimen/margin_tiny"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewLocation"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -80,19 +80,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mSearchContainer" />
 
-            <ProgressBar
+
+            <include
                 android:id="@+id/pgSearch"
                 style="?android:attr/progressBarStyle"
+                layout="@layout/loading_progress"
                 android:layout_width="200sp"
                 android:layout_height="200sp"
+
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginEnd="16dp"
                 android:visibility="invisible"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mSearchContainer" />
+
+
+
+            <ImageView
+                android:id="@+id/imageViewLocation"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="56dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/transparent"
+                android:onClick="@{()->fragment.readLocation()}"
+                android:tint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/location" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
