@@ -1,15 +1,24 @@
 # WeatherApp
 
-When the app starts, after asking for permission, it looks for the local gps position.
-If available, it queries the backend to retrieve the closest weather location
-If found, it queries the backend for the current and forecast weather
+When the app starts the first time, it will ask for permission to access to the Location Service
+and read Latitude and Longitude from the local GPS.
+This operation might take a few seconds.
+
+
+
+Once read, it queries the backend to retrieve the closest weather location.
+If found, it queries the backend for the current and forecast weather.
+Th today information are displayed:
+temperature, sunrise/sunset time, air pressure, humidity, wind, visibility
+The 5/10 forecast is also shown at the bottom.
 
 There's a calendar button of the left side of the Current Date.
-If clicked, it opens a calendar and let the user pick a date.
+When clicked, it opens a calendar and let the user pick a date.
 Then, the app retrieve the historical weather for that location and date
 
 On the left of the location name, there's an Edit button.
-Use this button to manually change the location
+Use this button to manually change the location.
+The user search for a new location or again query the gps for the closest location
 
 
 Use of:
