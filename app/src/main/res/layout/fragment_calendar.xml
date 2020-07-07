@@ -29,6 +29,7 @@
             style="@style/Style.Widgets.IconButton"
             android:layout_marginTop="15sp"
             android:layout_marginEnd="15sp"
+            android:onClick="@{()->fragment.close()}"
             app:icon="@drawable/ic_common_close" />
 
         <ru.cleverpumpkin.calendar.CalendarView

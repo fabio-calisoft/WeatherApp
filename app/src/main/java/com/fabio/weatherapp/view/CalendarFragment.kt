@@ -95,5 +95,10 @@ class CalendarFragment : Fragment() {
 
     }
 
+    fun close() {
+        parentFragment?.findNavController()
+            ?.navigate(R.id.action_calendarFragment_to_detailsFragment)
+    }
+
 
 }
