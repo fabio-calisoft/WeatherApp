@@ -130,8 +130,6 @@ class SearchCityFragment : Fragment(), TextWatcher {
         activity?.let {
             if (checkLocationPermission(it, this)) {
                 Log.d(TAG, "readLocation granted")
-                val locationManager =
-                    it.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
                 manageProgressBar(true, "Reading gps location")
 
                 val location = locationManager.getLastKnownLocation(provider!!)

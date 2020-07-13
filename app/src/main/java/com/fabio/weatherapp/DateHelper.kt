@@ -29,9 +29,10 @@ object DateHelper {
         } catch (e: ParseException) {
             e.printStackTrace()
         }
-        val formatted = output.format(d)
-        Log.i("DATE", "" + formatted)
-        return formatted
+        d?.let {
+            return output.format(it)
+        }
+        return ""
     }
 
     /**
@@ -50,7 +51,10 @@ object DateHelper {
         } catch (e: ParseException) {
             e.printStackTrace()
         }
-        return output.format(d)
+        d?.let {
+            return output.format(it)
+        }
+        return ""
     }
 
     @JvmStatic

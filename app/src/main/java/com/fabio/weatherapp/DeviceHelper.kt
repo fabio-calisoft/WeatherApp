@@ -10,10 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_details.*
-import kotlinx.android.synthetic.main.fragment_search_city.*
-import kotlinx.android.synthetic.main.loading_progress.view.*
-
 
 object DeviceHelper {
 
