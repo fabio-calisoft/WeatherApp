@@ -24,10 +24,11 @@ import com.fabio.weatherapp.R
 import com.fabio.weatherapp.adapter.SearchAdapter
 import com.fabio.weatherapp.databinding.FragmentSearchCityBinding
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search_city.*
 import kotlinx.android.synthetic.main.loading_progress.view.*
 
-
+@AndroidEntryPoint
 class SearchCityFragment : Fragment(), TextWatcher {
 
     private lateinit var viewModel: SearchActivityViewModel

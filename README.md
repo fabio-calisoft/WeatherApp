@@ -40,3 +40,4 @@ Calendar:
     https://github.com/CleverPumpkin/CrunchyCalendar
     I did not spend too much time looking for the best looking widget.
     The earliest date is 01/01/2014 as suggested in metaweather and the latest is _today_
+DI - Dependency Injection for the repositories using Hilt

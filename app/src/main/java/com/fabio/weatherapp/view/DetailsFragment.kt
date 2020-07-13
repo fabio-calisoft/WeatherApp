@@ -38,6 +38,7 @@ import com.fabio.weatherapp.databinding.FragmentDetailsBinding
 import com.fabio.weatherapp.model.ConsolidatedWeather
 import com.fabio.weatherapp.viewmodel.DetailsActivityViewModel
 import com.fabio.weatherapp.viewmodel.SearchActivityViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.loading_progress.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -45,7 +46,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     private lateinit var viewModel: DetailsActivityViewModel

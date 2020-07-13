@@ -13,9 +13,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
 
-class SearchActivityRepository(var application: Application) {
+class SearchActivityRepository @Inject constructor(var application: Application) {
 
     val showProgress = MutableLiveData<Boolean>()
     val locationList = MutableLiveData<List<Location>>()
