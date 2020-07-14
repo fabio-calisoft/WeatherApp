@@ -1,5 +1,20 @@
 # WeatherApp
 
+================== Goal of the Exercise =======================
+
+Goal: The goal of this exercise is to build a standard android app that can scale and is maintainable and testable. 
+
+Guidelines: Design your app architecture using best practices prescribed by Google Use Android jetpack components where possible. 
+Use your preferred language between Kotlin and Java. 
+Feel free to use any third party libraries as needed. 
+
+Exercise: You will be building a Weather app using the metaweather api (https://www.metaweather.com/api/) with the following features:
+Search for location
+Display location information, current weather and 5/10 day forecast when available 
+Display weather from a selectable date in the past year (Optional) 
+
+================== Developer's notes =======================
+
 When the app starts the first time, it will ask for permission to access to the Location Service
 and read Latitude and Longitude from the local GPS.
 This operation might take a few seconds.
