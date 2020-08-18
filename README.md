@@ -1,5 +1,8 @@
 # WeatherApp
 
+The app is available on the Google Play Store:
+https://play.google.com/store/apps/details?id=com.fabio.weatherapp
+
 ================== Goal of the Exercise =======================
 
 Goal: The goal of this exercise is to build a standard android app that can scale and is maintainable and testable. 
